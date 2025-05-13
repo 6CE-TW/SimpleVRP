@@ -4,4 +4,4 @@ set OUTPUT_PATH=output
 
 if not exist %OUTPUT_PATH% mkdir %OUTPUT_PATH%
 echo Compiling...
-"%CUDA_PATH%\bin\nvcc.exe" main.cu data.cu -std=c++17 -o %OUTPUT_PATH%\main.exe
+"%CUDA_PATH%\bin\nvcc.exe" main.cu data.cu solver.cu -std=c++17 -o %OUTPUT_PATH%\main.exe
