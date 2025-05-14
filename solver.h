@@ -2,11 +2,7 @@
 #define SOLVER_H
 
 #include <vector>
-
-enum InitialSolutionStrategy
-{
-  NaiveInitialSolution = 0,
-};
+#include "initial_solution/initial_solution.h"
 
 struct Route
 {
@@ -26,6 +22,7 @@ private:
   std::vector<std::vector<Route>> route_records;
 
   void InitialSolutionNaive();
+  void GetInitialSolution();
 
 public:
   SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
