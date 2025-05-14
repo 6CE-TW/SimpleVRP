@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "data.h"
+#include "data/data.h"
 #include "solver.h"
 
 int main()

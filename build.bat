@@ -5,7 +5,7 @@ set COMPILER="%CUDA_PATH%\bin\nvcc.exe"
 set FLAGS= -I. -std=c++17
 
 set OUTPUT_PATH=output
-set SOURCE_FILE=main.cc data.cc solver.cc initial_solution/initial_solution.cc
+set SOURCE_FILE=main.cc data/data.cc solver.cc initial_solution/initial_solution.cc
 
 if not exist %OUTPUT_PATH% mkdir %OUTPUT_PATH%
 echo Compiling...
