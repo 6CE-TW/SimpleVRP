@@ -3,7 +3,7 @@
 
 enum InitialSolutionStrategy
 {
-  NaiveInitialSolution = 0,
+  CHEAPEST_NEIGHBOR = 0,
 };
 
 #endif // INITIAL_SOLUTION_H

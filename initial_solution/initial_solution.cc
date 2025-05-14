@@ -5,13 +5,13 @@
 
 void SimpleVRPSolver::GetInitialSolution()
 {
-  if (this->initial_solution_strategy == InitialSolutionStrategy::NaiveInitialSolution)
+  if (this->initial_solution_strategy == InitialSolutionStrategy::CHEAPEST_NEIGHBOR)
   {
-    this->InitialSolutionNaive();
+    this->InitialSolutionCheapestNeighbor();
   }
 }
 
-void SimpleVRPSolver::InitialSolutionNaive()
+void SimpleVRPSolver::InitialSolutionCheapestNeighbor()
 {
   std::set<std::size_t> traversed_nodes;
   std::size_t latest_arrival_node = 0;
