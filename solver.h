@@ -22,6 +22,7 @@ private:
   std::vector<std::vector<Route>> route_records;
 
   void InitialSolutionCheapestNeighbor();
+  void InitialSolutionCheapestNeighborMultipleVehicle();
   void GetInitialSolution();
 
 public:

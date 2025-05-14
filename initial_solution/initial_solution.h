@@ -4,6 +4,7 @@
 enum InitialSolutionStrategy
 {
   CHEAPEST_NEIGHBOR = 0,
+  CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE = 1,
 };
 
 #endif // INITIAL_SOLUTION_H
