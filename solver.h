@@ -18,7 +18,7 @@ private:
   std::size_t _num_of_vehicles;
   std::size_t _num_of_nodes;
   double _cost;
-  InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR;
+  InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
   std::vector<std::vector<Route>> route_records;
 
   void InitialSolutionCheapestNeighbor();
