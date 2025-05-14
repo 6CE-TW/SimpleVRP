@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "data.h"
+#include "solver.h"
 
 int main()
 {
@@ -12,6 +13,10 @@ int main()
 
   std::vector<std::vector<double>> cost_matrix = CreateCostMatrix(n, node_map);
   PrintCostMatrix(cost_matrix, 5);
+
+  SimpleVRPSolver simple_vrp_solver(cost_matrix, 4);
+  simple_vrp_solver.Solve();
+  simple_vrp_solver.PrintSolution();
 
   return 0;
 }
