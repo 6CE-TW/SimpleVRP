@@ -77,7 +77,7 @@ void SimpleVRPSolver::PerformLocalSearchOnce()
 
   auto [best_cost, best_op] = FindBestLocalSearch(local_search_list, this->node_records, this->_cost_matrix);
 
-  if (best_op)
+  if (best_op && this->_cost > best_cost)
   {
     if (DEBUG)
     {
