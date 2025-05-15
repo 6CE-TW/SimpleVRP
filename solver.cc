@@ -25,6 +25,23 @@ void SimpleVRPSolver::PrintSolution()
   std::cout << "cost: " << this->_cost << "\n";
 }
 
+void SimpleVRPSolver::PrintNodeRecords()
+{
+  for (std::size_t i = 0; i < this->_num_of_vehicles; ++i)
+  {
+    std::size_t route_length = node_records.at(i).size();
+
+    std::cout << "vehicle " << i << "\n";
+    std::cout << node_records.at(i).at(0);
+    for (std::size_t j = 1; j < route_length; ++j)
+    {
+      std::cout << " -> " << node_records.at(i).at(j);
+    }
+    std::cout << "\n\n";
+  }
+  std::cout << "cost: " << this->_cost << "\n";
+}
+
 void SimpleVRPSolver::EncodeRouteToNodeRecord()
 {
   std::vector<std::vector<std::size_t>> node_records;

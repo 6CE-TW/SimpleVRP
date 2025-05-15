@@ -40,6 +40,7 @@ public:
 
   void Solve();
   void PrintSolution();
+  void PrintNodeRecords();
 };
 
 #endif // SOLVER_H
