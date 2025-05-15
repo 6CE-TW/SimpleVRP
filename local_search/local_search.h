@@ -21,6 +21,8 @@ enum LocalSearchEnum
 class LocalSearch
 {
 public:
+  virtual ~LocalSearch() = default;
+  virtual void Print() const = 0;
   size_t vehicle;
 };
 
@@ -30,7 +32,7 @@ public:
   size_t path_start;
   size_t path_end;
 
-  void Print()
+  void Print() const override 
   {
     std::cout << "TwoOpt - Vehicle: " << this->vehicle
               << " Reverse Path: (" << this->path_start << " -> " << this->path_end << ")\n";
