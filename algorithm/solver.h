@@ -30,6 +30,7 @@ private:
   void EncodeRouteToNodeRecord();
 
   void PerformLocalSearchOnce();
+  void PerformLocalSearchMultiple();
 
 public:
   SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
