@@ -1,4 +1,4 @@
-#include "local_search/local_search.h"
+#include "algorithm/local_search/local_search.h"
 
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {

@@ -2,7 +2,7 @@
 #define SOLVER_H
 
 #include <vector>
-#include "initial_solution/initial_solution.h"
+#include "algorithm/initial_solution/initial_solution.h"
 
 struct Route
 {

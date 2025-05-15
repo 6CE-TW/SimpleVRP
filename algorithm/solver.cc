@@ -1,8 +1,8 @@
 #include <iostream>
-#include "solver.h"
-#include "initial_solution/initial_solution.h"
-#include "local_search/local_search.h"
-#include "config.h"
+#include "algorithm/solver.h"
+#include "algorithm/initial_solution/initial_solution.h"
+#include "algorithm/local_search/local_search.h"
+#include "algorithm/config.h"
 
 void SimpleVRPSolver::Solve()
 {

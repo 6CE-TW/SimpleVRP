@@ -1,7 +1,7 @@
 #include <set>
 
-#include "solver.h"
-#include "initial_solution/initial_solution.h"
+#include "algorithm/solver.h"
+#include "algorithm/initial_solution/initial_solution.h"
 
 void SimpleVRPSolver::GetInitialSolution()
 {
