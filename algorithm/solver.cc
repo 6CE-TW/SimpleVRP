@@ -9,7 +9,8 @@ void SimpleVRPSolver::Solve()
   this->GetInitialSolution();
   this->EncodeRouteToNodeRecord();
 
-  this->PerformLocalSearchOnce();
+  // this->PerformLocalSearchOnce();
+  this->PerformLocalSearchMultiple();
 }
 
 void SimpleVRPSolver::PrintSolution()
