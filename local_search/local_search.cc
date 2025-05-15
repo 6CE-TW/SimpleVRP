@@ -57,3 +57,11 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   }
   return result_vector;
 }
+
+void VerifyLocalSearchList(const std::vector<std::unique_ptr<LocalSearch>> &local_search_list)
+{
+  for(const auto &lc : local_search_list)
+  {
+    lc->Print();
+  }
+}

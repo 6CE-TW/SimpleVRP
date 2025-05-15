@@ -64,4 +64,6 @@ public:
   std::vector<std::unique_ptr<LocalSearch>> GenerateLocalSearchList();
 };
 
+void VerifyLocalSearchList(const std::vector<std::unique_ptr<LocalSearch>> &local_search_list);
+
 #endif // LOCAL_SEARCH_H
