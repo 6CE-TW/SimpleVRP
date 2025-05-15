@@ -23,7 +23,13 @@ class LocalSearch
 public:
   virtual ~LocalSearch() = default;
   virtual void Print() const = 0;
+
+  virtual void Apply(
+      const std::vector<std::vector<std::size_t>> &input,
+      std::vector<std::vector<std::size_t>> &output) const = 0;
+
   size_t vehicle;
+  std::vector<std::vector<std::size_t>> test_solution;
 };
 
 class TwoOpt : public LocalSearch
@@ -32,10 +38,23 @@ public:
   size_t path_start;
   size_t path_end;
 
-  void Print() const override 
+  void Print() const override
   {
     std::cout << "TwoOpt - Vehicle: " << this->vehicle
               << " Reverse Path: (" << this->path_start << " -> " << this->path_end << ")\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+    if (path_start < path_end && path_end < route.size())
+    {
+      std::reverse(route.begin() + path_start, route.begin() + path_end + 1);
+    }
   }
 };
 
