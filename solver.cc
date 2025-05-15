@@ -1,11 +1,13 @@
 #include <iostream>
 #include "solver.h"
 #include "initial_solution/initial_solution.h"
+#include "local_search/local_search.h"
 
 void SimpleVRPSolver::Solve()
 {
   this->GetInitialSolution();
   this->EncodeRouteToNodeRecord();
+  this->PerformLocalSearch();
 }
 
 void SimpleVRPSolver::PrintSolution()
@@ -58,4 +60,11 @@ void SimpleVRPSolver::EncodeRouteToNodeRecord()
     node_records.push_back(single_vehicle_node_records);
   }
   this->node_records = node_records;
+}
+
+void SimpleVRPSolver::PerformLocalSearch()
+{
+  LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
+  std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
+  VerifyLocalSearchList(local_search_list);
 }
