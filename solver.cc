@@ -67,4 +67,20 @@ void SimpleVRPSolver::PerformLocalSearch()
   LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
   std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
   VerifyLocalSearchList(local_search_list);
+
+  auto [best_cost, best_op] = FindBestLocalSearch(local_search_list, this->node_records, this->_cost_matrix);
+
+  if (best_op)
+  {
+    std::cout << "=== Best Operation ===\n";
+    best_op->Print();
+
+    this->node_records = std::move(best_op->test_solution);
+    this->_cost = best_cost;
+    // best_op->ApplyInPlace(this->node_records);
+  }
+  else
+  {
+    std::cout << "No improvement found.\n";
+  }
 }
