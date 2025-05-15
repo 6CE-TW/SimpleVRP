@@ -5,6 +5,7 @@
 void SimpleVRPSolver::Solve()
 {
   this->GetInitialSolution();
+  this->EncodeRouteToNodeRecord();
 }
 
 void SimpleVRPSolver::PrintSolution()
