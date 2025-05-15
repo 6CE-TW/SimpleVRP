@@ -51,11 +51,13 @@ private:
       true, // 7: LNS
   };
   std::vector<std::vector<std::size_t>> _node_records;
+  std::size_t _num_of_vehicle;
 
 public:
-  LocalSearchGenerator(std::vector<std::vector<std::size_t>> node_records)
+  LocalSearchGenerator(std::vector<std::vector<std::size_t>> node_records, std::size_t num_of_vehicle)
   {
     this->_node_records = node_records;
+    this->_num_of_vehicle = num_of_vehicle;
   }
   std::vector<LocalSearch> GenerateLocalSearchList();
 };
