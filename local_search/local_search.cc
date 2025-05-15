@@ -2,9 +2,30 @@
 
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
+  std::vector<std::unique_ptr<LocalSearch>> result_vector;
   // 0: TWO_OPT
   if (this->usable_local_search[0] == true)
   {
+    for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
+    {
+      if (this->_node_records[vehicle].size() <= 3)
+      {
+        continue;
+      }
+
+      std::size_t size = _node_records[vehicle].size();
+      for (std::size_t node_i = 1; node_i < size - 1; ++node_i)
+      {
+        for (std::size_t node_j = node_i + 1; node_j < size - 1; ++node_j)
+        {
+          auto two_opt_operator = std::make_unique<TwoOpt>();
+          two_opt_operator->vehicle = vehicle;
+          two_opt_operator->path_start = node_i;
+          two_opt_operator->path_end = node_j;
+          result_vector.push_back(std::move(two_opt_operator));
+        }
+      }
+    }
   }
   // 1: OR_OPT
   if (this->usable_local_search[1] == true)
@@ -34,4 +55,5 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   if (this->usable_local_search[7] == true)
   {
   }
+  return result_vector;
 }
