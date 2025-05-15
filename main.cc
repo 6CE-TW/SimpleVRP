@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "data/data.h"
-#include "solver.h"
+#include "algorithm/solver.h"
 
 int main()
 {
