@@ -2,11 +2,7 @@
 #define SOLVER_H
 
 #include <vector>
-
-enum InitialSolutionStrategy
-{
-  NaiveInitialSolution = 0,
-};
+#include "algorithm/initial_solution/initial_solution.h"
 
 struct Route
 {
@@ -22,10 +18,18 @@ private:
   std::size_t _num_of_vehicles;
   std::size_t _num_of_nodes;
   double _cost;
-  InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::NaiveInitialSolution;
-  std::vector<std::vector<Route>> route_records;
+  InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
 
-  void InitialSolutionNaive();
+  std::vector<std::vector<Route>> route_records;
+  std::vector<std::vector<std::size_t>> node_records;
+
+  void InitialSolutionCheapestNeighbor();
+  void InitialSolutionCheapestNeighborMultipleVehicle();
+  void GetInitialSolution();
+
+  void EncodeRouteToNodeRecord();
+
+  void PerformLocalSearch();
 
 public:
   SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
@@ -38,6 +42,7 @@ public:
 
   void Solve();
   void PrintSolution();
+  void PrintNodeRecords();
 };
 
 #endif // SOLVER_H
