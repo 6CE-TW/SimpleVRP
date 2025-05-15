@@ -85,4 +85,9 @@ public:
 
 void VerifyLocalSearchList(const std::vector<std::unique_ptr<LocalSearch>> &local_search_list);
 
+std::pair<double, const LocalSearch *> FindBestLocalSearch(
+    const std::vector<std::unique_ptr<LocalSearch>> &local_search_list,
+    const std::vector<std::vector<std::size_t>> &original_node_records,
+    const std::vector<std::vector<double>> &cost_matrix);
+
 #endif // LOCAL_SEARCH_H

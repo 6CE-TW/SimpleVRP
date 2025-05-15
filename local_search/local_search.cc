@@ -78,3 +78,28 @@ double EvaluateCost(const std::vector<std::vector<std::size_t>> &test_solution, 
   }
   return total_cost;
 }
+
+std::pair<double, const LocalSearch *> FindBestLocalSearch(
+    const std::vector<std::unique_ptr<LocalSearch>> &local_search_list,
+    const std::vector<std::vector<std::size_t>> &original_node_records,
+    const std::vector<std::vector<double>> &cost_matrix)
+{
+  double best_cost = DBL_MAX;
+  const LocalSearch *best_operator = nullptr;
+
+  for (const auto &op : local_search_list)
+  {
+    std::vector<std::vector<std::size_t>> test_solution;
+    op->Apply(original_node_records, test_solution);
+
+    double cost = EvaluateCost(test_solution, cost_matrix); // Need to Do
+    if (cost < best_cost)
+    {
+      best_cost = cost;
+      best_operator = op.get();
+      op->test_solution = test_solution;
+    }
+  }
+
+  return {best_cost, best_operator};
+}
