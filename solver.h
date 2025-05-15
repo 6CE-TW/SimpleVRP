@@ -19,11 +19,15 @@ private:
   std::size_t _num_of_nodes;
   double _cost;
   InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
+
   std::vector<std::vector<Route>> route_records;
+  std::vector<std::vector<std::size_t>> node_records;
 
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
   void GetInitialSolution();
+
+  void EncodeRouteToNodeRecord();
 
 public:
   SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
