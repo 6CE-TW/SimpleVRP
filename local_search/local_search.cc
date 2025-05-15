@@ -60,8 +60,21 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
 
 void VerifyLocalSearchList(const std::vector<std::unique_ptr<LocalSearch>> &local_search_list)
 {
-  for(const auto &lc : local_search_list)
+  for (const auto &lc : local_search_list)
   {
     lc->Print();
   }
+}
+
+double EvaluateCost(const std::vector<std::vector<std::size_t>> &test_solution, const std::vector<std::vector<double>> &cost_matrix)
+{
+  double total_cost = 0;
+  for (const auto &route : test_solution)
+  {
+    for (std::size_t i = 1; i < route.size(); ++i)
+    {
+      total_cost += cost_matrix[route[i - 1]][route[i]];
+    }
+  }
+  return total_cost;
 }
