@@ -17,6 +17,7 @@ int main()
   SimpleVRPSolver simple_vrp_solver(cost_matrix, 4);
   simple_vrp_solver.Solve();
   simple_vrp_solver.PrintSolution();
+  simple_vrp_solver.PrintNodeRecords();
 
   return 0;
 }
