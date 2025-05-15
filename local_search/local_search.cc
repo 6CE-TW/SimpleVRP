@@ -1,6 +1,6 @@
 #include "local_search/local_search.h"
 
-std::vector<LocalSearch> LocalSearchGenerator::GenerateLocalSearchList()
+std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
   // 0: TWO_OPT
   if (this->usable_local_search[0] == true)

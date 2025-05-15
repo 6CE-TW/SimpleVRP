@@ -59,7 +59,7 @@ public:
     this->_node_records = node_records;
     this->_num_of_vehicle = num_of_vehicle;
   }
-  std::vector<LocalSearch> GenerateLocalSearchList();
+  std::vector<std::unique_ptr<LocalSearch>> GenerateLocalSearchList();
 };
 
 #endif // LOCAL_SEARCH_H
