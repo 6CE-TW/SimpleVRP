@@ -31,10 +31,6 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   if (this->usable_local_search[LocalSearchEnum::OR_OPT])
   {
   }
-  // SWAP
-  if (this->usable_local_search[LocalSearchEnum::SWAP])
-  {
-  }
   // THREE_OPT
   if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
   {
@@ -176,10 +172,6 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
         }
       }
     }
-  }
-  // LAMBDA_EXCHANGE
-  if (this->usable_local_search[LocalSearchEnum::LAMBDA_EXCHANGE])
-  {
   }
   // LNS
   if (this->usable_local_search[LocalSearchEnum::LNS])

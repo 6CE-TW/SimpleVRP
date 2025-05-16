@@ -14,7 +14,6 @@ enum LocalSearchEnum
   // intra route operation
   TWO_OPT = 0,
   OR_OPT = 1,
-  SWAP = 2,
   THREE_OPT = 3,
   RELOCATE_SAME_VEHICLE = 4,
 
@@ -22,8 +21,6 @@ enum LocalSearchEnum
   RELOCATE_DIFF_VEHICLE = 10,
   EXCHANGE = 11,
   CROSS = 12,
-
-  LAMBDA_EXCHANGE = 21,
 
   LNS = 30,
 };
@@ -204,13 +201,11 @@ private:
   std::unordered_map<LocalSearchEnum, bool> usable_local_search = {
       {LocalSearchEnum::TWO_OPT, true},
       {LocalSearchEnum::OR_OPT, true},
-      {LocalSearchEnum::SWAP, true},
       {LocalSearchEnum::THREE_OPT, true},
       {LocalSearchEnum::RELOCATE_SAME_VEHICLE, true},
       {LocalSearchEnum::RELOCATE_DIFF_VEHICLE, true},
       {LocalSearchEnum::EXCHANGE, true},
       {LocalSearchEnum::CROSS, true},
-      {LocalSearchEnum::LAMBDA_EXCHANGE, true},
       {LocalSearchEnum::LNS, true},
   };
   std::vector<std::vector<std::size_t>> _node_records;
