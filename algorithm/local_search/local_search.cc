@@ -123,17 +123,17 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
           std::size_t size_j = _node_records[vehicle_j].size();
           for (std::size_t node_j = 1; node_j < size_j - 1; ++node_j)
           {
-            if(vehicle_i == vehicle_j && node_j <= node_i)
+            if (vehicle_i == vehicle_j && node_j <= node_i)
             {
               continue;
             }
 
-            auto relocate_operator = std::make_unique<Exchange>();
-            relocate_operator->vehicle_i = vehicle_i;
-            relocate_operator->vehicle_j = vehicle_j;
-            relocate_operator->path_position_i = node_i;
-            relocate_operator->path_position_j = node_j;
-            result_vector.push_back(std::move(relocate_operator));
+            auto exchange_operator = std::make_unique<Exchange>();
+            exchange_operator->vehicle_i = vehicle_i;
+            exchange_operator->vehicle_j = vehicle_j;
+            exchange_operator->path_position_i = node_i;
+            exchange_operator->path_position_j = node_j;
+            result_vector.push_back(std::move(exchange_operator));
           }
         }
       }
