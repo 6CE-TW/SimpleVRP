@@ -32,7 +32,6 @@ public:
       const std::vector<std::vector<std::size_t>> &input,
       std::vector<std::vector<std::size_t>> &output) const = 0;
 
-  size_t vehicle;
   std::vector<std::vector<std::size_t>> test_solution;
 };
 
@@ -41,6 +40,7 @@ class TwoOpt : public LocalSearch
 public:
   size_t path_start;
   size_t path_end;
+  size_t vehicle;
 
   void Print() const override
   {
