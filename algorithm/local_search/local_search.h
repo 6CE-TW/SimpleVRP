@@ -63,6 +63,76 @@ public:
   }
 };
 
+class RelocateSameVehicle : public LocalSearch
+{
+public:
+  size_t vehicle;
+  size_t original_path_position;
+  size_t new_path_position;
+
+  void Print() const override
+  {
+    std::cout << "Relocate - Vehicle: " << this->vehicle
+              << " Position [" << this->original_path_position << "] -> [" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+
+    if (original_path_position >= route.size())
+      return;
+
+    std::size_t node = route.at(original_path_position);
+
+    std::size_t adjusted_new_pos = new_path_position;
+    if (original_path_position < new_path_position)
+      adjusted_new_pos -= 1;
+
+    if (adjusted_new_pos > route.size())
+      return;
+
+    route.erase(route.begin() + original_path_position);
+    route.insert(route.begin() + adjusted_new_pos, node);
+  }
+};
+
+class RelocateDiffVehicle : public LocalSearch
+{
+public:
+  size_t original_vehicle;
+  size_t original_path_position;
+  size_t new_vehicle;
+  size_t new_path_position;
+
+  void Print() const override
+  {
+    std::cout << "Relocate - Position: [" << this->original_vehicle << "][" << this->original_path_position
+              << "] -> Path Position: [" << this->new_vehicle << "][" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (original_vehicle >= output.size() || new_vehicle >= output.size())
+      return;
+    auto &original_route = output[original_vehicle];
+    auto &new_route = output[new_vehicle];
+
+    if (original_path_position >= original_route.size() || new_path_position >= new_route.size())
+      return;
+
+    std::size_t node = original_route.at(original_path_position);
+    original_route.erase(original_route.begin() + original_path_position);
+    new_route.insert(new_route.begin() + new_path_position, node);
+  }
+};
+
 class LocalSearchGenerator
 {
 private:

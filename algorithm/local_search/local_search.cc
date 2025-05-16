@@ -42,10 +42,64 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   // RELOCATE_SAME_VEHICLE
   if (this->usable_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE])
   {
+    for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
+    {
+      if (this->_node_records[vehicle].size() <= 2)
+      {
+        continue;
+      }
+
+      std::size_t size = _node_records[vehicle].size();
+      for (std::size_t node = 1; node < size - 1; ++node)
+      {
+        std::size_t size_position = _node_records[vehicle].size();
+        for (std::size_t position = 1; position < size_position; ++position)
+        {
+          if (node == position || node == position + 1)
+          {
+            continue;
+          }
+          auto relocate_operator = std::make_unique<RelocateSameVehicle>();
+          relocate_operator->vehicle = vehicle;
+          relocate_operator->original_path_position = node;
+          relocate_operator->new_path_position = position;
+          result_vector.push_back(std::move(relocate_operator));
+        }
+      }
+    }
   }
   // RELOCATE_DIFF_VEHICLE
   if (this->usable_local_search[LocalSearchEnum::RELOCATE_DIFF_VEHICLE])
   {
+    for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
+    {
+      if (this->_node_records[vehicle_i].size() <= 2)
+      {
+        continue;
+      }
+
+      std::size_t size = _node_records[vehicle_i].size();
+      for (std::size_t node = 1; node < size - 1; ++node)
+      {
+        for (std::size_t vehicle_j = 0; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
+        {
+          if (vehicle_i == vehicle_j)
+          {
+            continue;
+          }
+          std::size_t size_position = _node_records[vehicle_j].size();
+          for (std::size_t position = 1; position < size_position; ++position)
+          {
+            auto relocate_operator = std::make_unique<RelocateDiffVehicle>();
+            relocate_operator->original_vehicle = vehicle_i;
+            relocate_operator->new_vehicle = vehicle_j;
+            relocate_operator->original_path_position = node;
+            relocate_operator->new_path_position = position;
+            result_vector.push_back(std::move(relocate_operator));
+          }
+        }
+      }
+    }
   }
   // CROSS_EXCHANGE
   if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
