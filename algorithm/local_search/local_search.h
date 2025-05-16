@@ -5,6 +5,10 @@
 #include <vector>
 #include <unordered_map>
 
+void SwapSubsegments(
+    std::vector<std::size_t> &a, size_t a_start, size_t a_end,
+    std::vector<std::size_t> &b, size_t b_start, size_t b_end);
+
 enum LocalSearchEnum
 {
   // intra route operation

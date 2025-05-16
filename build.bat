@@ -13,6 +13,7 @@ test/main.cc ^
 data/data.cc ^
 algorithm/solver.cc ^
 algorithm/initial_solution/initial_solution.cc ^
+algorithm/local_search/tools.cc ^
 algorithm/local_search/local_search.cc
 
 REM create output folder (if not exist)
