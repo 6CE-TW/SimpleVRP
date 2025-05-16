@@ -113,7 +113,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       std::size_t size_i = _node_records[vehicle_i].size();
       for (std::size_t node_i = 1; node_i < size_i - 1; ++node_i)
       {
-        for (std::size_t vehicle_j = 0; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
+        for (std::size_t vehicle_j = vehicle_i; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
         {
           // if (this->_node_records[vehicle_j].size() <= 2)
           // {
@@ -123,6 +123,11 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
           std::size_t size_j = _node_records[vehicle_j].size();
           for (std::size_t node_j = 1; node_j < size_j - 1; ++node_j)
           {
+            if(vehicle_i == vehicle_j && node_j <= node_i)
+            {
+              continue;
+            }
+
             auto relocate_operator = std::make_unique<Exchange>();
             relocate_operator->vehicle_i = vehicle_i;
             relocate_operator->vehicle_j = vehicle_j;
