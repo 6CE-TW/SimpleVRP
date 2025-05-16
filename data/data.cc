@@ -51,10 +51,12 @@ void PrintCostMatrix(std::vector<std::vector<double>> cost_matrix, int iomanip_s
 std::vector<Cartesian> CreateNodeMap(int num_of_node, Cartesian sand_box)
 {
   std::vector<Cartesian> node_map;
-  for (size_t i = 0; i < num_of_node; i++)
+  Cartesian depot = {0, 0};
+  node_map.push_back(depot);
+  for (size_t i = 1; i < num_of_node; i++)
   {
-    int rand_x = GenerateRandomNumber(0, sand_box.x);
-    int rand_y = GenerateRandomNumber(0, sand_box.y);
+    int rand_x = GenerateRandomNumber(-1 * sand_box.x / 2, sand_box.x / 2);
+    int rand_y = GenerateRandomNumber(-1 * sand_box.y / 2, sand_box.y / 2);
     Cartesian temp_node = {rand_x, rand_y};
     node_map.push_back(temp_node);
   }
