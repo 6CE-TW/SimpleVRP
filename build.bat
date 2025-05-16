@@ -9,7 +9,7 @@ set FLAGS= -I. -std=c++17
 REM set file path and files
 set OUTPUT_PATH=output
 set SOURCE_FILE= ^
-main.cc ^
+test/main.cc ^
 data/data.cc ^
 algorithm/solver.cc ^
 algorithm/initial_solution/initial_solution.cc ^
