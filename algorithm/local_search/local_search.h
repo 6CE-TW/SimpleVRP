@@ -3,19 +3,24 @@
 
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 enum LocalSearchEnum
 {
+  // intra route operation
   TWO_OPT = 0,
   OR_OPT = 1,
-  RELOCATE = 2,
-  SWAP = 3,
+  SWAP = 2,
+  THREE_OPT = 3,
+  RELOCATE_SAME_VEHICLE = 4,
 
-  CROSS_EXCHANGE = 4,
-  THREE_OPT = 5,
-  LAMBDA_EXCHANGE = 6,
+  // inter route operation
+  RELOCATE_DIFF_VEHICLE = 10,
 
-  LNS = 7,
+  CROSS_EXCHANGE = 20,
+  LAMBDA_EXCHANGE = 21,
+
+  LNS = 30,
 };
 
 class LocalSearch
@@ -28,7 +33,6 @@ public:
       const std::vector<std::vector<std::size_t>> &input,
       std::vector<std::vector<std::size_t>> &output) const = 0;
 
-  size_t vehicle;
   std::vector<std::vector<std::size_t>> test_solution;
 };
 
@@ -37,6 +41,7 @@ class TwoOpt : public LocalSearch
 public:
   size_t path_start;
   size_t path_end;
+  size_t vehicle;
 
   void Print() const override
   {
@@ -58,18 +63,89 @@ public:
   }
 };
 
+class RelocateSameVehicle : public LocalSearch
+{
+public:
+  size_t vehicle;
+  size_t original_path_position;
+  size_t new_path_position;
+
+  void Print() const override
+  {
+    std::cout << "Relocate - Vehicle: " << this->vehicle
+              << " Position [" << this->original_path_position << "] -> [" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+
+    if (original_path_position >= route.size())
+      return;
+
+    std::size_t node = route.at(original_path_position);
+
+    std::size_t adjusted_new_pos = new_path_position;
+    if (original_path_position < new_path_position)
+      adjusted_new_pos -= 1;
+
+    if (adjusted_new_pos > route.size())
+      return;
+
+    route.erase(route.begin() + original_path_position);
+    route.insert(route.begin() + adjusted_new_pos, node);
+  }
+};
+
+class RelocateDiffVehicle : public LocalSearch
+{
+public:
+  size_t original_vehicle;
+  size_t original_path_position;
+  size_t new_vehicle;
+  size_t new_path_position;
+
+  void Print() const override
+  {
+    std::cout << "Relocate - Position: [" << this->original_vehicle << "][" << this->original_path_position
+              << "] -> Path Position: [" << this->new_vehicle << "][" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (original_vehicle >= output.size() || new_vehicle >= output.size())
+      return;
+    auto &original_route = output[original_vehicle];
+    auto &new_route = output[new_vehicle];
+
+    if (original_path_position >= original_route.size() || new_path_position >= new_route.size())
+      return;
+
+    std::size_t node = original_route.at(original_path_position);
+    original_route.erase(original_route.begin() + original_path_position);
+    new_route.insert(new_route.begin() + new_path_position, node);
+  }
+};
+
 class LocalSearchGenerator
 {
 private:
-  std::vector<bool> usable_local_search = {
-      true, // 0: TWO_OPT
-      true, // 1: OR_OPT
-      true, // 2: RELOCATE
-      true, // 3: SWAP
-      true, // 4: CROSS_EXCHANGE
-      true, // 5: THREE_OPT
-      true, // 6: LAMBDA_EXCHANGE
-      true, // 7: LNS
+  std::unordered_map<LocalSearchEnum, bool> usable_local_search = {
+      {LocalSearchEnum::TWO_OPT, true},
+      {LocalSearchEnum::OR_OPT, true},
+      {LocalSearchEnum::SWAP, true},
+      {LocalSearchEnum::THREE_OPT, true},
+      {LocalSearchEnum::RELOCATE_SAME_VEHICLE, true},
+      {LocalSearchEnum::RELOCATE_DIFF_VEHICLE, true},
+      {LocalSearchEnum::CROSS_EXCHANGE, true},
+      {LocalSearchEnum::LAMBDA_EXCHANGE, true},
+      {LocalSearchEnum::LNS, true},
   };
   std::vector<std::vector<std::size_t>> _node_records;
   std::size_t _num_of_vehicle;

@@ -3,6 +3,18 @@
 #include "algorithm/solver.h"
 #include "algorithm/initial_solution/initial_solution.h"
 
+std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_solution_strategy)
+{
+  if (initial_solution_strategy == InitialSolutionStrategy::CHEAPEST_NEIGHBOR)
+  {
+    return "CHEAPEST_NEIGHBOR";
+  }
+  if (initial_solution_strategy == InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE)
+  {
+    return "CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE";
+  }
+}
+
 void SimpleVRPSolver::GetInitialSolution()
 {
   if (this->initial_solution_strategy == InitialSolutionStrategy::CHEAPEST_NEIGHBOR)
