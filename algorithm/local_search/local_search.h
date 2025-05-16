@@ -17,8 +17,8 @@ enum LocalSearchEnum
   // inter route operation
   RELOCATE_DIFF_VEHICLE = 10,
   EXCHANGE = 11,
+  CROSS = 12,
 
-  CROSS_EXCHANGE = 20,
   LAMBDA_EXCHANGE = 21,
 
   LNS = 30,
@@ -175,7 +175,7 @@ private:
       {LocalSearchEnum::RELOCATE_SAME_VEHICLE, true},
       {LocalSearchEnum::RELOCATE_DIFF_VEHICLE, true},
       {LocalSearchEnum::EXCHANGE, true},
-      {LocalSearchEnum::CROSS_EXCHANGE, true},
+      {LocalSearchEnum::CROSS, true},
       {LocalSearchEnum::LAMBDA_EXCHANGE, true},
       {LocalSearchEnum::LNS, true},
   };

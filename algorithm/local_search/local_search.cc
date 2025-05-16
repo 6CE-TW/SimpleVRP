@@ -139,8 +139,8 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       }
     }
   }
-  // CROSS_EXCHANGE
-  if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
+  // CROSS
+  if (this->usable_local_search[LocalSearchEnum::CROSS])
   {
   }
   // LAMBDA_EXCHANGE
