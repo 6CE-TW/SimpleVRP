@@ -44,7 +44,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
-      if (this->_node_records[vehicle].size() <= 2)
+      if (this->_node_records[vehicle].size() <= 3)
       {
         continue;
       }
@@ -52,8 +52,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       std::size_t size = _node_records[vehicle].size();
       for (std::size_t node = 1; node < size - 1; ++node)
       {
-        std::size_t size_position = _node_records[vehicle].size();
-        for (std::size_t position = 1; position < size_position; ++position)
+        for (std::size_t position = 1; position < size; ++position)
         {
           if (node == position || node == position + 1)
           {
