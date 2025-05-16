@@ -12,9 +12,10 @@ enum LocalSearchEnum
   OR_OPT = 1,
   SWAP = 2,
   THREE_OPT = 3,
+  RELOCATE_SAME_VEHICLE = 4,
 
   // inter route operation
-  RELOCATE = 4,
+  RELOCATE_DIFF_VEHICLE = 10,
 
   CROSS_EXCHANGE = 5,
   LAMBDA_EXCHANGE = 6,
@@ -70,7 +71,8 @@ private:
       {LocalSearchEnum::OR_OPT, true},
       {LocalSearchEnum::SWAP, true},
       {LocalSearchEnum::THREE_OPT, true},
-      {LocalSearchEnum::RELOCATE, true},
+      {LocalSearchEnum::RELOCATE_SAME_VEHICLE, true},
+      {LocalSearchEnum::RELOCATE_DIFF_VEHICLE, true},
       {LocalSearchEnum::CROSS_EXCHANGE, true},
       {LocalSearchEnum::LAMBDA_EXCHANGE, true},
       {LocalSearchEnum::LNS, true},

@@ -39,8 +39,12 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
   {
   }
-  // RELOCATE
-  if (this->usable_local_search[LocalSearchEnum::RELOCATE])
+  // RELOCATE_SAME_VEHICLE
+  if (this->usable_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE])
+  {
+  }
+  // RELOCATE_DIFF_VEHICLE
+  if (this->usable_local_search[LocalSearchEnum::RELOCATE_DIFF_VEHICLE])
   {
   }
   // CROSS_EXCHANGE
