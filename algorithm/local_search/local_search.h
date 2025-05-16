@@ -69,9 +69,9 @@ private:
       {LocalSearchEnum::TWO_OPT, true},
       {LocalSearchEnum::OR_OPT, true},
       {LocalSearchEnum::SWAP, true},
+      {LocalSearchEnum::THREE_OPT, true},
       {LocalSearchEnum::RELOCATE, true},
       {LocalSearchEnum::CROSS_EXCHANGE, true},
-      {LocalSearchEnum::THREE_OPT, true},
       {LocalSearchEnum::LAMBDA_EXCHANGE, true},
       {LocalSearchEnum::LNS, true},
   };

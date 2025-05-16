@@ -31,20 +31,20 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   if (this->usable_local_search[LocalSearchEnum::OR_OPT])
   {
   }
-  // RELOCATE
-  if (this->usable_local_search[LocalSearchEnum::RELOCATE])
-  {
-  }
   // SWAP
   if (this->usable_local_search[LocalSearchEnum::SWAP])
   {
   }
-  // CROSS_EXCHANGE
-  if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
-  {
-  }
   // THREE_OPT
   if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
+  {
+  }
+  // RELOCATE
+  if (this->usable_local_search[LocalSearchEnum::RELOCATE])
+  {
+  }
+  // CROSS_EXCHANGE
+  if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
   {
   }
   // LAMBDA_EXCHANGE
