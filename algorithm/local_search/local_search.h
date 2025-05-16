@@ -111,7 +111,7 @@ public:
 
   void Print() const override
   {
-    std::cout << "Relocate - Position: [" << this->original_vehicle << "][" << this->original_path_position
+    std::cout << "Relocate - Path Position: [" << this->original_vehicle << "][" << this->original_path_position
               << "] -> Path Position: [" << this->new_vehicle << "][" << this->new_path_position << "]\n";
   }
 
