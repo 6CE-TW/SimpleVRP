@@ -3,16 +3,20 @@
 
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 enum LocalSearchEnum
 {
+  // intra route operation
   TWO_OPT = 0,
   OR_OPT = 1,
-  RELOCATE = 2,
-  SWAP = 3,
+  SWAP = 2,
+  THREE_OPT = 3,
 
-  CROSS_EXCHANGE = 4,
-  THREE_OPT = 5,
+  // inter route operation
+  RELOCATE = 4,
+
+  CROSS_EXCHANGE = 5,
   LAMBDA_EXCHANGE = 6,
 
   LNS = 7,
@@ -61,15 +65,15 @@ public:
 class LocalSearchGenerator
 {
 private:
-  std::vector<bool> usable_local_search = {
-      true, // 0: TWO_OPT
-      true, // 1: OR_OPT
-      true, // 2: RELOCATE
-      true, // 3: SWAP
-      true, // 4: CROSS_EXCHANGE
-      true, // 5: THREE_OPT
-      true, // 6: LAMBDA_EXCHANGE
-      true, // 7: LNS
+  std::unordered_map<LocalSearchEnum, bool> usable_local_search = {
+      {LocalSearchEnum::TWO_OPT, true},
+      {LocalSearchEnum::OR_OPT, true},
+      {LocalSearchEnum::SWAP, true},
+      {LocalSearchEnum::RELOCATE, true},
+      {LocalSearchEnum::CROSS_EXCHANGE, true},
+      {LocalSearchEnum::THREE_OPT, true},
+      {LocalSearchEnum::LAMBDA_EXCHANGE, true},
+      {LocalSearchEnum::LNS, true},
   };
   std::vector<std::vector<std::size_t>> _node_records;
   std::size_t _num_of_vehicle;

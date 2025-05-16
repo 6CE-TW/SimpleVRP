@@ -3,8 +3,8 @@
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
   std::vector<std::unique_ptr<LocalSearch>> result_vector;
-  // 0: TWO_OPT
-  if (this->usable_local_search[0] == true)
+  // TWO_OPT
+  if (this->usable_local_search[LocalSearchEnum::TWO_OPT])
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
@@ -27,32 +27,32 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       }
     }
   }
-  // 1: OR_OPT
-  if (this->usable_local_search[1] == true)
+  // OR_OPT
+  if (this->usable_local_search[LocalSearchEnum::OR_OPT])
   {
   }
-  // 2: RELOCATE
-  if (this->usable_local_search[2] == true)
+  // RELOCATE
+  if (this->usable_local_search[LocalSearchEnum::RELOCATE])
   {
   }
-  // 3: SWAP
-  if (this->usable_local_search[3] == true)
+  // SWAP
+  if (this->usable_local_search[LocalSearchEnum::SWAP])
   {
   }
-  // 4: CROSS_EXCHANGE
-  if (this->usable_local_search[4] == true)
+  // CROSS_EXCHANGE
+  if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
   {
   }
-  // 5: THREE_OPT
-  if (this->usable_local_search[5] == true)
+  // THREE_OPT
+  if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
   {
   }
-  // 6: LAMBDA_EXCHANGE
-  if (this->usable_local_search[6] == true)
+  // LAMBDA_EXCHANGE
+  if (this->usable_local_search[LocalSearchEnum::LAMBDA_EXCHANGE])
   {
   }
-  // 7: LNS
-  if (this->usable_local_search[7] == true)
+  // LNS
+  if (this->usable_local_search[LocalSearchEnum::LNS])
   {
   }
   return result_vector;
