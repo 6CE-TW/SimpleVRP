@@ -9,6 +9,12 @@ void SimpleVRPSolver::Solve()
   this->GetInitialSolution();
   this->EncodeRouteToNodeRecord();
 
+  if (LOG)
+  {
+    std::cout << "cost: " << this->_cost
+              << " calculate by " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
+  }
+
   // this->PerformLocalSearchOnce();
   this->PerformLocalSearchMultiple();
 }
@@ -85,6 +91,11 @@ void SimpleVRPSolver::PerformLocalSearchOnce()
       best_op->Print();
       std::cout << "cost: " << this->_cost << " -> " << best_cost << "\n";
     }
+    else if (LOG)
+    {
+      std::cout << "cost: " << best_cost << " ";
+      best_op->Print();
+    }
 
     this->node_records = std::move(best_op->test_solution);
     this->_cost = best_cost;
@@ -119,6 +130,11 @@ void SimpleVRPSolver::PerformLocalSearchMultiple()
         std::cout << "=== Best Operation ===\n";
         best_op->Print();
         std::cout << "cost: " << this->_cost << " -> " << best_cost << "\n";
+      }
+      else if (LOG)
+      {
+        std::cout << "cost: " << best_cost << " ";
+        best_op->Print();
       }
 
       this->node_records = std::move(best_op->test_solution);
