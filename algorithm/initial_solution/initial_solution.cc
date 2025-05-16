@@ -13,6 +13,7 @@ std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_
   {
     return "CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE";
   }
+  return "";
 }
 
 void SimpleVRPSolver::GetInitialSolution()
