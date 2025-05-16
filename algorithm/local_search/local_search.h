@@ -17,10 +17,10 @@ enum LocalSearchEnum
   // inter route operation
   RELOCATE_DIFF_VEHICLE = 10,
 
-  CROSS_EXCHANGE = 5,
-  LAMBDA_EXCHANGE = 6,
+  CROSS_EXCHANGE = 20,
+  LAMBDA_EXCHANGE = 21,
 
-  LNS = 7,
+  LNS = 30,
 };
 
 class LocalSearch
