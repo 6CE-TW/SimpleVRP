@@ -16,6 +16,7 @@ enum LocalSearchEnum
 
   // inter route operation
   RELOCATE_DIFF_VEHICLE = 10,
+  EXCHANGE = 11,
 
   CROSS_EXCHANGE = 20,
   LAMBDA_EXCHANGE = 21,
@@ -133,6 +134,36 @@ public:
   }
 };
 
+class Exchange : public LocalSearch
+{
+public:
+  size_t vehicle_i;
+  size_t path_position_i;
+  size_t vehicle_j;
+  size_t path_position_j;
+
+  void Print() const override
+  {
+    std::cout << "Exchange - Path Position: [" << this->vehicle_i << "][" << this->path_position_i
+              << "] <-> Path Position: [" << this->vehicle_j << "][" << this->path_position_j << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle_i >= output.size() || vehicle_j >= output.size())
+      return;
+    auto &route_i = output[vehicle_i];
+    auto &route_j = output[vehicle_j];
+
+    if (path_position_i >= route_i.size() || path_position_j >= route_j.size())
+      return;
+
+    std::swap(route_i[path_position_i], route_j[path_position_j]);
+  }
+};
+
 class LocalSearchGenerator
 {
 private:
@@ -143,6 +174,7 @@ private:
       {LocalSearchEnum::THREE_OPT, true},
       {LocalSearchEnum::RELOCATE_SAME_VEHICLE, true},
       {LocalSearchEnum::RELOCATE_DIFF_VEHICLE, true},
+      {LocalSearchEnum::EXCHANGE, true},
       {LocalSearchEnum::CROSS_EXCHANGE, true},
       {LocalSearchEnum::LAMBDA_EXCHANGE, true},
       {LocalSearchEnum::LNS, true},

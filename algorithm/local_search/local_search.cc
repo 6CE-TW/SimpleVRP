@@ -100,6 +100,40 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       }
     }
   }
+  // EXCHANGE
+  if (this->usable_local_search[LocalSearchEnum::EXCHANGE])
+  {
+    for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
+    {
+      // if (this->_node_records[vehicle_i].size() <= 2)
+      // {
+      //   continue;
+      // }
+
+      std::size_t size_i = _node_records[vehicle_i].size();
+      for (std::size_t node_i = 1; node_i < size_i - 1; ++node_i)
+      {
+        for (std::size_t vehicle_j = 0; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
+        {
+          // if (this->_node_records[vehicle_j].size() <= 2)
+          // {
+          //   continue;
+          // }
+
+          std::size_t size_j = _node_records[vehicle_j].size();
+          for (std::size_t node_j = 1; node_j < size_j - 1; ++node_j)
+          {
+            auto relocate_operator = std::make_unique<Exchange>();
+            relocate_operator->vehicle_i = vehicle_i;
+            relocate_operator->vehicle_j = vehicle_j;
+            relocate_operator->path_position_i = node_i;
+            relocate_operator->path_position_j = node_j;
+            result_vector.push_back(std::move(relocate_operator));
+          }
+        }
+      }
+    }
+  }
   // CROSS_EXCHANGE
   if (this->usable_local_search[LocalSearchEnum::CROSS_EXCHANGE])
   {
