@@ -168,6 +168,36 @@ public:
   }
 };
 
+class Cross : public LocalSearch
+{
+public:
+  size_t vehicle_i;
+  size_t segment_i_start;
+  size_t segment_i_end;
+  size_t vehicle_j;
+  size_t segment_j_start;
+  size_t segment_j_end;
+
+  void Print() const override
+  {
+    std::cout << "Cross - Path Position: [" << this->vehicle_i << "][" << this->segment_i_start << ", " << this->segment_i_end
+              << ") <-> Path Position: [" << this->vehicle_j << "][" << this->segment_j_start << ", " << this->segment_j_end << ")\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle_i >= output.size() || vehicle_j >= output.size())
+      return;
+    auto &route_i = output[vehicle_i];
+    auto &route_j = output[vehicle_j];
+
+    SwapSubsegments(route_i, this->segment_i_start, this->segment_i_end,
+                    route_j, this->segment_j_start, this->segment_j_end);
+  }
+};
+
 class LocalSearchGenerator
 {
 private:

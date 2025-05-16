@@ -142,6 +142,40 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   // CROSS
   if (this->usable_local_search[LocalSearchEnum::CROSS])
   {
+    for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
+    {
+      std::size_t size_i = _node_records[vehicle_i].size();
+      // all sub-segment [segment_i_start, segment_i_end) of route_i
+      for (std::size_t segment_i_start = 1; segment_i_start < size_i - 1; ++segment_i_start)
+      {
+        for (std::size_t segment_i_end = segment_i_start + 1; segment_i_end <= size_i - 1; ++segment_i_end)
+        {
+          // TODO: Add length limit if necessary?
+          // size_t length_a = segment_i_end - segment_i_start;
+          // if (length_a > 3)
+          //   continue;
+
+          for (std::size_t vehicle_j = vehicle_i + 1; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
+          {
+            std::size_t size_j = _node_records[vehicle_j].size();
+            for (std::size_t segment_j_start = 1; segment_j_start < size_j - 1; ++segment_j_start)
+            {
+              for (std::size_t segment_j_end = segment_j_start + 1; segment_j_end <= size_j - 1; ++segment_j_end)
+              {
+                auto cross_operator = std::make_unique<Cross>();
+                cross_operator->vehicle_i = vehicle_i;
+                cross_operator->vehicle_j = vehicle_j;
+                cross_operator->segment_i_start = segment_i_start;
+                cross_operator->segment_j_start = segment_j_start;
+                cross_operator->segment_i_end = segment_i_end;
+                cross_operator->segment_j_end = segment_j_end;
+                result_vector.push_back(std::move(cross_operator));
+              }
+            }
+          }
+        }
+      }
+    }
   }
   // LAMBDA_EXCHANGE
   if (this->usable_local_search[LocalSearchEnum::LAMBDA_EXCHANGE])
