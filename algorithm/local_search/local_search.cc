@@ -1,4 +1,5 @@
 #include "algorithm/local_search/local_search.h"
+#include "algorithm/config.h"
 
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
@@ -146,10 +147,9 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       {
         for (std::size_t segment_i_end = segment_i_start + 1; segment_i_end <= size_i - 1; ++segment_i_end)
         {
-          // TODO: Add length limit if necessary?
-          // size_t length_a = segment_i_end - segment_i_start;
-          // if (length_a > 3)
-          //   continue;
+          size_t length_i = segment_i_end - segment_i_start;
+          if (CROSS_LENGTH_LIMIT != -1 && length_i > CROSS_LENGTH_LIMIT)
+            break;
 
           for (std::size_t vehicle_j = vehicle_i + 1; vehicle_j < this->_num_of_vehicle; ++vehicle_j)
           {
@@ -158,6 +158,10 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
             {
               for (std::size_t segment_j_end = segment_j_start + 1; segment_j_end <= size_j - 1; ++segment_j_end)
               {
+                size_t length_j = segment_j_end - segment_j_start;
+                if (CROSS_LENGTH_LIMIT != -1 && length_j > CROSS_LENGTH_LIMIT)
+                  break;
+
                 auto cross_operator = std::make_unique<Cross>();
                 cross_operator->vehicle_i = vehicle_i;
                 cross_operator->vehicle_j = vehicle_j;
