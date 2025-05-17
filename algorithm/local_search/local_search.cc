@@ -82,7 +82,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       {
         for (std::size_t position = 1; position < size; ++position)
         {
-          if (node == position || node == position + 1)
+          if (position == node || position == node + 1)
           {
             continue;
           }
