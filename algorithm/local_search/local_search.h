@@ -65,6 +65,47 @@ public:
   }
 };
 
+class OrOpt : public LocalSearch
+{
+public:
+  size_t vehicle;
+  size_t original_path_position_start;
+  size_t new_path_position;
+  size_t segment_length;
+
+  void Print() const override
+  {
+    std::cout << "OrOpt - Vehicle: " << this->vehicle
+              << " Position [" << this->original_path_position_start << ", " << this->original_path_position_start + this->segment_length - 1
+              << "] -> [" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+
+    if (original_path_position_start >= route.size())
+      return;
+
+    std::vector<std::size_t> nodes(route.begin() + original_path_position_start,
+                                   route.begin() + original_path_position_start + segment_length);
+
+    std::size_t adjusted_new_pos = new_path_position;
+    if (original_path_position_start < new_path_position)
+      adjusted_new_pos -= segment_length;
+
+    if (adjusted_new_pos > route.size())
+      return;
+
+    route.erase(route.begin() + original_path_position_start, route.begin() + original_path_position_start + segment_length);
+    route.insert(route.begin() + adjusted_new_pos, nodes.begin(), nodes.end());
+  }
+};
+
 class RelocateSameVehicle : public LocalSearch
 {
 public:

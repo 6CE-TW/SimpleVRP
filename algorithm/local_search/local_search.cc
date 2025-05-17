@@ -31,6 +31,37 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   // OR_OPT
   if (this->usable_local_search[LocalSearchEnum::OR_OPT])
   {
+    for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
+    {
+      if (this->_node_records[vehicle].size() <= 3)
+      {
+        continue;
+      }
+
+      std::size_t size = _node_records[vehicle].size();
+      for (std::size_t segment_length = 1; segment_length <= 3; ++segment_length)
+      {
+        for (std::size_t node = 1; node + segment_length < size; ++node)
+        {
+          // sub-segment length = 1, (position == node || position == node + 1) continue
+          // sub-segment length = 2, (position == node || position == node + 1 || position == node + 2) continue
+          // sub-segment length = 3, (position == node || position == node + 1 || position == node + 2 || position == node + 3) continue
+          for (std::size_t position = 1; position < size; ++position)
+          {
+            if (node <= position && position <= node + segment_length)
+            {
+              continue;
+            }
+            auto or_opt_operator = std::make_unique<OrOpt>();
+            or_opt_operator->vehicle = vehicle;
+            or_opt_operator->original_path_position_start = node;
+            or_opt_operator->new_path_position = position;
+            or_opt_operator->segment_length = segment_length;
+            result_vector.push_back(std::move(or_opt_operator));
+          }
+        }
+      }
+    }
   }
   // THREE_OPT
   if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
