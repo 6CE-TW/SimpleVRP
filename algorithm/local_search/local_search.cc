@@ -3,6 +3,12 @@
 
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
+  /*
+  TODO: 1. erase duplicated local search between different local search operators
+            eg. OR_OPT of 1 node = RELOCATE_SAME_VEHICLE
+                EXCHANGE is included in CROSS
+        2. test local search in 3-opt
+  */
   std::vector<std::unique_ptr<LocalSearch>> result_vector;
   // TWO_OPT
   if (this->usable_local_search[LocalSearchEnum::TWO_OPT])
