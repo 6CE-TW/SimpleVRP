@@ -154,6 +154,37 @@ public:
   }
 };
 
+class DoubleTwoOpt : public LocalSearch
+{
+public:
+  size_t path_start_1;
+  size_t path_end_1;
+  size_t path_start_2;
+  size_t path_end_2;
+  size_t vehicle;
+
+  void Print() const override
+  {
+    std::cout << "DoubleTwoOpt - Vehicle: " << this->vehicle
+              << " Reverse Path: (" << this->path_start_1 << " -> " << this->path_end_1 << ") and ("
+              << this->path_start_2 << " -> " << this->path_end_2 << ")\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+    if (path_start_1 < path_end_1 && path_end_1 < path_start_2 && path_start_2 < path_end_2 && path_end_2 < route.size())
+    {
+      std::reverse(route.begin() + path_start_1, route.begin() + path_end_1 + 1);
+      std::reverse(route.begin() + path_start_2, route.begin() + path_end_2 + 1);
+    }
+  }
+};
+
 class RelocateSameVehicle : public LocalSearch
 {
 public:
