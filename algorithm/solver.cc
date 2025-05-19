@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "algorithm/solver.h"
 #include "algorithm/initial_solution/initial_solution.h"
 #include "algorithm/local_search/local_search.h"
@@ -11,8 +12,8 @@ void SimpleVRPSolver::Solve()
 
   if (LOG)
   {
-    std::cout << "cost: " << this->_cost
-              << " calculate by " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
+    std::cout << "cost: " << std::fixed << std::setprecision(2) << this->_cost
+              << " Initial Solution - " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
   }
 
   // this->PerformLocalSearchOnce();
@@ -93,7 +94,7 @@ void SimpleVRPSolver::PerformLocalSearchOnce()
     }
     else if (LOG)
     {
-      std::cout << "cost: " << best_cost << " ";
+      std::cout << "cost: " << std::fixed << std::setprecision(2) << best_cost << " ";
       best_op->Print();
     }
 
@@ -133,7 +134,7 @@ void SimpleVRPSolver::PerformLocalSearchMultiple()
       }
       else if (LOG)
       {
-        std::cout << "cost: " << best_cost << " ";
+        std::cout << "cost: " << std::fixed << std::setprecision(2) << best_cost << " ";
         best_op->Print();
       }
 
