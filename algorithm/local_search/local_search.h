@@ -106,6 +106,54 @@ public:
   }
 };
 
+// Extract [start, start + len) segment and reverse it
+// Delete original segment
+// Reinsert at new position (adjusted if moving forward)
+class OrOptReverse : public LocalSearch
+{
+public:
+  size_t vehicle;
+  size_t original_path_position_start;
+  size_t new_path_position;
+  size_t segment_length;
+
+  void Print() const override
+  {
+    std::cout << "OrOptReverse - Vehicle: " << this->vehicle
+              << " Position [" << this->original_path_position_start << ", " << this->original_path_position_start + this->segment_length - 1
+              << "] -> [" << this->new_path_position << "]\n";
+  }
+
+  void Apply(const std::vector<std::vector<std::size_t>> &input,
+             std::vector<std::vector<std::size_t>> &output) const override
+  {
+    output = input;
+    if (vehicle >= output.size())
+      return;
+    auto &route = output[vehicle];
+
+    if (original_path_position_start >= route.size())
+      return;
+
+    using It = std::vector<std::size_t>::const_iterator;
+    It first = route.begin() + original_path_position_start;
+    It last = first + segment_length;
+
+    std::vector<std::size_t> nodes(std::make_reverse_iterator(last),
+                                   std::make_reverse_iterator(first));
+
+    std::size_t adjusted_new_pos = new_path_position;
+    if (original_path_position_start < new_path_position)
+      adjusted_new_pos -= segment_length;
+
+    if (adjusted_new_pos > route.size())
+      return;
+
+    route.erase(first, last);
+    route.insert(route.begin() + adjusted_new_pos, nodes.begin(), nodes.end());
+  }
+};
+
 class RelocateSameVehicle : public LocalSearch
 {
 public:
