@@ -39,7 +39,13 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       }
 
       std::size_t size = _node_records[vehicle].size();
-      for (std::size_t segment_length = 1; segment_length <= 3; ++segment_length)
+      std::size_t segment_length_limit = size - 3;
+      if (OR_OPT_LENGTH_LIMIT != -1)
+      {
+        segment_length_limit = OR_OPT_LENGTH_LIMIT;
+      }
+
+      for (std::size_t segment_length = 1; segment_length <= segment_length_limit; ++segment_length)
       {
         for (std::size_t node = 1; node + segment_length < size; ++node)
         {
