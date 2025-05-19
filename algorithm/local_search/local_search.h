@@ -48,7 +48,7 @@ public:
   void Print() const override
   {
     std::cout << "TwoOpt - Vehicle: " << this->vehicle
-              << " Reverse Path: (" << this->path_start << " -> " << this->path_end << ")\n";
+              << " Reverse Path: [" << this->path_start << " -> " << this->path_end << "]\n";
   }
 
   void Apply(const std::vector<std::vector<std::size_t>> &input,
@@ -166,8 +166,8 @@ public:
   void Print() const override
   {
     std::cout << "DoubleTwoOpt - Vehicle: " << this->vehicle
-              << " Reverse Path: (" << this->path_start_1 << " -> " << this->path_end_1 << ") and ("
-              << this->path_start_2 << " -> " << this->path_end_2 << ")\n";
+              << " Reverse Path: [" << this->path_start_1 << " -> " << this->path_end_1 << "] and ["
+              << this->path_start_2 << " -> " << this->path_end_2 << "]\n";
   }
 
   void Apply(const std::vector<std::vector<std::size_t>> &input,
