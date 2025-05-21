@@ -337,6 +337,12 @@ public:
     this->_node_records = node_records;
     this->_num_of_vehicle = num_of_vehicle;
   }
+  LocalSearchGenerator(std::vector<std::vector<std::size_t>> node_records, std::size_t num_of_vehicle, std::unordered_map<LocalSearchEnum, bool> usable_local_search)
+  {
+    this->_node_records = node_records;
+    this->_num_of_vehicle = num_of_vehicle;
+    this->_usable_local_search = usable_local_search;
+  }
   std::vector<std::unique_ptr<LocalSearch>> GenerateLocalSearchList();
   void SetupUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> usable_local_search)
   {

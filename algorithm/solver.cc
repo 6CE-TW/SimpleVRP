@@ -82,7 +82,7 @@ void SimpleVRPSolver::EncodeRouteToNodeRecord()
 
 void SimpleVRPSolver::PerformLocalSearchOnce()
 {
-  LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
+  LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles, this->local_search_parameter.usable_local_search());
   std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
 
   if (DEBUG)
@@ -122,7 +122,7 @@ void SimpleVRPSolver::PerformLocalSearchMultiple()
 {
   while (true)
   {
-    LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
+    LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles, this->local_search_parameter.usable_local_search());
     std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
 
     if (DEBUG)
