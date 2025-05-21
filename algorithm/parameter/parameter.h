@@ -7,7 +7,7 @@
 class LocalSearchParameter
 {
 private:
-  std::unordered_map<LocalSearchEnum, bool> _rearranged_local_search = {
+  std::unordered_map<LocalSearchEnum, bool> _usable_local_search = {
       {LocalSearchEnum::TWO_OPT, true},
       {LocalSearchEnum::OR_OPT, true},
       {LocalSearchEnum::THREE_OPT, true},
@@ -22,29 +22,29 @@ public:
   LocalSearchParameter();
   LocalSearchParameter(std::unordered_map<LocalSearchEnum, bool> usable_local_search);
 
-  inline std::unordered_map<LocalSearchEnum, bool> rearranged_local_search()
+  inline std::unordered_map<LocalSearchEnum, bool> usable_local_search()
   {
-    return this->_rearranged_local_search;
+    return this->_usable_local_search;
   }
 
-  void set_rearranged_local_search(const std::unordered_map<LocalSearchEnum, bool> usable_local_search)
+  void set_usable_local_search(const std::unordered_map<LocalSearchEnum, bool> usable_local_search)
   {
-    this->_rearranged_local_search = usable_local_search;
-    if (this->_rearranged_local_search[LocalSearchEnum::THREE_OPT])
+    this->_usable_local_search = usable_local_search;
+    if (this->_usable_local_search[LocalSearchEnum::THREE_OPT])
     {
-      this->_rearranged_local_search[LocalSearchEnum::TWO_OPT] = true;
+      this->_usable_local_search[LocalSearchEnum::TWO_OPT] = true;
       // Here we assume OR_OPT_LENGTH_LIMIT_IN_THREE_OPT >= OR_OPT_LENGTH_LIMIT
       // TODO: Consider the situation that length limit in OR OPT is larger
-      this->_rearranged_local_search[LocalSearchEnum::OR_OPT] = false;
-      this->_rearranged_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE] = false;
+      this->_usable_local_search[LocalSearchEnum::OR_OPT] = false;
+      this->_usable_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE] = false;
     }
-    if (this->_rearranged_local_search[LocalSearchEnum::OR_OPT])
+    if (this->_usable_local_search[LocalSearchEnum::OR_OPT])
     {
-      this->_rearranged_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE] = false;
+      this->_usable_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE] = false;
     }
-    if (this->_rearranged_local_search[LocalSearchEnum::CROSS])
+    if (this->_usable_local_search[LocalSearchEnum::CROSS])
     {
-      this->_rearranged_local_search[LocalSearchEnum::EXCHANGE] = false;
+      this->_usable_local_search[LocalSearchEnum::EXCHANGE] = false;
     }
   }
 };

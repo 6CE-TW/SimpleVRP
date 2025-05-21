@@ -8,7 +8,7 @@
 
 void SimpleVRPSolver::SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list)
 {
-  this->local_search_parameter.set_rearranged_local_search(local_search_list);
+  this->local_search_parameter.set_usable_local_search(local_search_list);
 }
 
 void SimpleVRPSolver::Solve()
@@ -22,7 +22,7 @@ void SimpleVRPSolver::Solve()
               << " Initial Solution - " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
   }
 
-  auto modified_local_search_list = this->local_search_parameter.rearranged_local_search();
+  auto modified_local_search_list = this->local_search_parameter.usable_local_search();
 
   // this->PerformLocalSearchOnce();
   this->PerformLocalSearchMultiple();
