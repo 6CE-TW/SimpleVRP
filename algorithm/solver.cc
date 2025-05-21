@@ -3,7 +3,13 @@
 #include "algorithm/solver.h"
 #include "algorithm/initial_solution/initial_solution.h"
 #include "algorithm/local_search/local_search.h"
+#include "algorithm/parameter/parameter.h"
 #include "algorithm/config.h"
+
+void SimpleVRPSolver::SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list)
+{
+  this->local_search_parameter.set_rearranged_local_search(local_search_list);
+}
 
 void SimpleVRPSolver::Solve()
 {
@@ -15,6 +21,8 @@ void SimpleVRPSolver::Solve()
     std::cout << "cost: " << std::fixed << std::setprecision(2) << this->_cost
               << " Initial Solution - " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
   }
+
+  auto modified_local_search_list = this->local_search_parameter.rearranged_local_search();
 
   // this->PerformLocalSearchOnce();
   this->PerformLocalSearchMultiple();

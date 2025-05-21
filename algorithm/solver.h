@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "algorithm/initial_solution/initial_solution.h"
+#include "algorithm/parameter/parameter.h"
 
 struct Route
 {
@@ -23,6 +24,8 @@ private:
   std::vector<std::vector<Route>> route_records;
   std::vector<std::vector<std::size_t>> node_records;
 
+  LocalSearchParameter local_search_parameter;
+
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
   void GetInitialSolution();
@@ -40,6 +43,8 @@ public:
     this->_num_of_nodes = cost_matrix.size();
     this->route_records = std::vector<std::vector<Route>>(num_of_vehicles, std::vector<Route>{});
   }
+
+  void SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list);
 
   void Solve();
   void PrintSolution();
