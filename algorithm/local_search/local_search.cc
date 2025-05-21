@@ -11,7 +11,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
   */
   std::vector<std::unique_ptr<LocalSearch>> result_vector;
   // TWO_OPT
-  if (this->usable_local_search[LocalSearchEnum::TWO_OPT])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::TWO_OPT))
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
@@ -35,7 +35,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // OR_OPT
-  if (this->usable_local_search[LocalSearchEnum::OR_OPT])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::OR_OPT))
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
@@ -76,7 +76,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // THREE_OPT
-  if (this->usable_local_search[LocalSearchEnum::THREE_OPT])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::THREE_OPT))
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
@@ -141,7 +141,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // RELOCATE_SAME_VEHICLE
-  if (this->usable_local_search[LocalSearchEnum::RELOCATE_SAME_VEHICLE])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::RELOCATE_SAME_VEHICLE))
   {
     for (std::size_t vehicle = 0; vehicle < this->_num_of_vehicle; ++vehicle)
     {
@@ -169,7 +169,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // RELOCATE_DIFF_VEHICLE
-  if (this->usable_local_search[LocalSearchEnum::RELOCATE_DIFF_VEHICLE])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::RELOCATE_DIFF_VEHICLE))
   {
     for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
     {
@@ -202,7 +202,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // EXCHANGE
-  if (this->usable_local_search[LocalSearchEnum::EXCHANGE])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::EXCHANGE))
   {
     for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
     {
@@ -241,7 +241,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // CROSS
-  if (this->usable_local_search[LocalSearchEnum::CROSS])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::CROSS))
   {
     for (std::size_t vehicle_i = 0; vehicle_i < this->_num_of_vehicle; ++vehicle_i)
     {
@@ -282,7 +282,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
     }
   }
   // LNS
-  if (this->usable_local_search[LocalSearchEnum::LNS])
+  if (this->IsLocalSearchUsable(LocalSearchEnum::LNS))
   {
   }
   return result_vector;

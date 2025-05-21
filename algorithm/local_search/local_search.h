@@ -318,7 +318,7 @@ public:
 class LocalSearchGenerator
 {
 private:
-  std::unordered_map<LocalSearchEnum, bool> usable_local_search = {
+  std::unordered_map<LocalSearchEnum, bool> _usable_local_search = {
       {LocalSearchEnum::TWO_OPT, true},
       {LocalSearchEnum::OR_OPT, true},
       {LocalSearchEnum::THREE_OPT, true},
@@ -338,6 +338,14 @@ public:
     this->_num_of_vehicle = num_of_vehicle;
   }
   std::vector<std::unique_ptr<LocalSearch>> GenerateLocalSearchList();
+  void SetupUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> usable_local_search)
+  {
+    this->_usable_local_search = usable_local_search;
+  }
+  const bool IsLocalSearchUsable(const LocalSearchEnum local_search)
+  {
+    return this->_usable_local_search[local_search];
+  }
 };
 
 void VerifyLocalSearchList(const std::vector<std::unique_ptr<LocalSearch>> &local_search_list);
