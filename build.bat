@@ -14,7 +14,8 @@ data/data.cc ^
 algorithm/solver.cc ^
 algorithm/initial_solution/initial_solution.cc ^
 algorithm/local_search/tools.cc ^
-algorithm/local_search/local_search.cc
+algorithm/local_search/local_search.cc ^
+algorithm/parameter/parameter.cc
 
 REM create output folder (if not exist)
 if not exist %OUTPUT_PATH% mkdir %OUTPUT_PATH%
