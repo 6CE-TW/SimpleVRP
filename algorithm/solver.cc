@@ -25,6 +25,7 @@ void SimpleVRPSolver::Solve()
   auto modified_local_search_list = this->local_search_parameter.usable_local_search();
 
   // this->PerformLocalSearchOnce();
+  this->PerformLocalSearch();
 }
 
 void SimpleVRPSolver::PrintSolution()
