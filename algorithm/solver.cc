@@ -25,7 +25,6 @@ void SimpleVRPSolver::Solve()
   auto modified_local_search_list = this->local_search_parameter.usable_local_search();
 
   // this->PerformLocalSearchOnce();
-  this->PerformLocalSearchMultiple();
 }
 
 void SimpleVRPSolver::PrintSolution()
@@ -118,7 +117,7 @@ void SimpleVRPSolver::PerformLocalSearchOnce()
   }
 }
 
-void SimpleVRPSolver::PerformLocalSearchMultiple()
+void SimpleVRPSolver::PerformLocalSearchGreedy()
 {
   while (true)
   {
@@ -158,5 +157,28 @@ void SimpleVRPSolver::PerformLocalSearchMultiple()
 
       break;
     }
+  }
+}
+
+void SimpleVRPSolver::PerformLocalSearch()
+{
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::DO_NOTHING)
+  {
+  }
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::GREEDY)
+  {
+    this->PerformLocalSearchGreedy();
+  }
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::EPSILON_GREEDY)
+  {
+  }
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::GUIDED_LOCAL_SEARCH)
+  {
+  }
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::TABU_SEARCH)
+  {
+  }
+  if (this->metaheuristic_strategy == MetaheuristicStrategy::SIMULATED_ANNEALING_SEARCH)
+  {
   }
 }
