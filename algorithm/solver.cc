@@ -3,7 +3,13 @@
 #include "algorithm/solver.h"
 #include "algorithm/initial_solution/initial_solution.h"
 #include "algorithm/local_search/local_search.h"
+#include "algorithm/parameter/parameter.h"
 #include "algorithm/config.h"
+
+void SimpleVRPSolver::SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list)
+{
+  this->local_search_parameter.set_usable_local_search(local_search_list);
+}
 
 void SimpleVRPSolver::Solve()
 {
@@ -15,6 +21,8 @@ void SimpleVRPSolver::Solve()
     std::cout << "cost: " << std::fixed << std::setprecision(2) << this->_cost
               << " Initial Solution - " << InitialSolutionStrategyEnumToString(this->initial_solution_strategy) << "\n";
   }
+
+  auto modified_local_search_list = this->local_search_parameter.usable_local_search();
 
   // this->PerformLocalSearchOnce();
   this->PerformLocalSearchMultiple();
@@ -74,7 +82,7 @@ void SimpleVRPSolver::EncodeRouteToNodeRecord()
 
 void SimpleVRPSolver::PerformLocalSearchOnce()
 {
-  LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
+  LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles, this->local_search_parameter.usable_local_search());
   std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
 
   if (DEBUG)
@@ -114,7 +122,7 @@ void SimpleVRPSolver::PerformLocalSearchMultiple()
 {
   while (true)
   {
-    LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles);
+    LocalSearchGenerator local_search_generator(this->node_records, this->_num_of_vehicles, this->local_search_parameter.usable_local_search());
     std::vector<std::unique_ptr<LocalSearch>> local_search_list = local_search_generator.GenerateLocalSearchList();
 
     if (DEBUG)
