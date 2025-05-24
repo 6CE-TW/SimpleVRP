@@ -1,5 +1,4 @@
 #include <vector>
-#include <chrono>
 #include "algorithm/local_search/local_search.h"
 
 void SwapSubsegments(
@@ -16,18 +15,3 @@ void SwapSubsegments(
   b.insert(b.begin() + b_start, temp_a.begin(), temp_a.end());
 }
 
-std::int64_t now_unixtime()
-{
-  const auto current_now = std::chrono::system_clock::now();
-  const auto time = std::chrono::duration_cast<std::chrono::seconds>(current_now.time_since_epoch()).count();
-
-  return time;
-}
-
-std::int64_t now_unixtime_milliseconds()
-{
-  const auto current_now = std::chrono::system_clock::now();
-  const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(current_now.time_since_epoch()).count();
-
-  return time;
-}
