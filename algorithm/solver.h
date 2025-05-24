@@ -4,6 +4,7 @@
 #include <vector>
 #include "algorithm/initial_solution/initial_solution.h"
 #include "algorithm/local_search/metaheuristic.h"
+#include "algorithm/common_tools.h"
 #include "algorithm/parameter/parameter.h"
 
 struct Route
@@ -26,6 +27,13 @@ private:
 
   std::vector<std::vector<Route>> route_records;
   std::vector<std::vector<std::size_t>> node_records;
+
+  int64_t solve_start_unixtime = 0;
+
+  inline void RecordSolverStartTime()
+  {
+    this->solve_start_unixtime = now_unixtime_milliseconds();
+  }
 
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();

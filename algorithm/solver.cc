@@ -13,6 +13,7 @@ void SimpleVRPSolver::SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, b
 
 void SimpleVRPSolver::Solve()
 {
+  this->RecordSolverStartTime();
   this->GetInitialSolution();
   this->EncodeRouteToNodeRecord();
 
