@@ -126,7 +126,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       {
         for (std::size_t node_j = node_i + 1; node_j < size - 1; ++node_j)
         {
-        for (std::size_t node_k = node_j + 2; node_k < size - 1; ++node_k)
+          for (std::size_t node_k = node_j + 2; node_k < size - 1; ++node_k)
           {
             auto double_two_opt_operator = std::make_unique<DoubleTwoOpt>();
             double_two_opt_operator->vehicle = vehicle;
