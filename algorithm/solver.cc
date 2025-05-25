@@ -7,6 +7,9 @@
 #include "algorithm/parameter/parameter.h"
 #include "algorithm/config.h"
 
+// TODO: use glog to print log
+// #include <glog/logging.h>
+
 void SimpleVRPSolver::SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list)
 {
   this->local_search_parameter.set_usable_local_search(local_search_list);
