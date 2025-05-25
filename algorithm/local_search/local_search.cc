@@ -126,7 +126,7 @@ std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSea
       {
         for (std::size_t node_j = node_i + 1; node_j < size - 1; ++node_j)
         {
-        for (std::size_t node_k = node_j + 2; node_k < size - 1; ++node_k)
+          for (std::size_t node_k = node_j + 2; node_k < size - 1; ++node_k)
           {
             auto double_two_opt_operator = std::make_unique<DoubleTwoOpt>();
             double_two_opt_operator->vehicle = vehicle;
@@ -332,4 +332,53 @@ std::pair<double, const LocalSearch *> FindBestLocalSearch(
   }
 
   return {best_cost, best_operator};
+}
+
+std::pair<double, double> EvaluateCostGuidedLocalSearch(
+    const std::vector<std::vector<std::size_t>> &test_solution,
+    const std::vector<std::vector<double>> &cost_matrix,
+    const std::vector<std::vector<int>> &penalty_counter_matrix)
+{
+  double total_cost = 0;
+  double augmented_total_cost = 0;
+
+  for (const auto &route : test_solution)
+  {
+    for (std::size_t i = 1; i < route.size(); ++i)
+    {
+      double route_cost = cost_matrix[route[i - 1]][route[i]];
+      total_cost += route_cost;
+      augmented_total_cost += route_cost +
+                              gls_lambda * penalty_counter_matrix[route[i - 1]][route[i]] * route_cost;
+    }
+  }
+  return {total_cost, augmented_total_cost};
+}
+
+std::tuple<double, double, const LocalSearch *> FindBestLocalSearchGuidedLocalSearch(
+    const std::vector<std::unique_ptr<LocalSearch>> &local_search_list,
+    const std::vector<std::vector<std::size_t>> &original_node_records,
+    const std::vector<std::vector<double>> &cost_matrix,
+    const std::vector<std::vector<int>> &penalty_counter_matrix)
+{
+  double best_cost = DBL_MAX;
+  double best_augmented_cost = DBL_MAX;
+  const LocalSearch *best_operator = nullptr;
+
+  for (const auto &op : local_search_list)
+  {
+    std::vector<std::vector<std::size_t>> test_solution;
+    op->Apply(original_node_records, test_solution);
+
+    auto [cost, augmented_cost] = EvaluateCostGuidedLocalSearch(test_solution, cost_matrix, penalty_counter_matrix);
+    if (augmented_cost < best_augmented_cost)
+    {
+      best_cost = cost;
+      best_augmented_cost = augmented_cost;
+      best_operator = op.get();
+      op->test_solution = test_solution;
+    }
+  }
+
+  return {best_cost, best_augmented_cost, best_operator};
 }

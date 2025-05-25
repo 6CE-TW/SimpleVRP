@@ -14,3 +14,4 @@ void SwapSubsegments(
   b.erase(b.begin() + b_start, b.begin() + b_end);
   b.insert(b.begin() + b_start, temp_a.begin(), temp_a.end());
 }
+

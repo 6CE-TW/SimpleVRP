@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "algorithm/initial_solution/initial_solution.h"
+#include "algorithm/local_search/metaheuristic.h"
+#include "algorithm/common_tools.h"
 #include "algorithm/parameter/parameter.h"
 
 struct Route
@@ -20,11 +22,18 @@ private:
   std::size_t _num_of_nodes;
   double _cost;
   InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
+  LocalSearchParameter local_search_parameter;
+  MetaheuristicStrategy metaheuristic_strategy = MetaheuristicStrategy::GUIDED_LOCAL_SEARCH;
 
   std::vector<std::vector<Route>> route_records;
   std::vector<std::vector<std::size_t>> node_records;
 
-  LocalSearchParameter local_search_parameter;
+  int64_t solve_start_unixtime = 0;
+
+  inline void RecordSolverStartTime()
+  {
+    this->solve_start_unixtime = now_unixtime_milliseconds();
+  }
 
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
@@ -33,7 +42,9 @@ private:
   void EncodeRouteToNodeRecord();
 
   void PerformLocalSearchOnce();
-  void PerformLocalSearchMultiple();
+  void PerformLocalSearchGreedy();
+  void PerformLocalSearchGuidedLocalSearch(std::atomic<bool> &time_flag);
+  void PerformLocalSearch();
 
 public:
   SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
