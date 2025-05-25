@@ -361,4 +361,10 @@ std::pair<double, const LocalSearch *> FindBestLocalSearch(
     const std::vector<std::vector<std::size_t>> &original_node_records,
     const std::vector<std::vector<double>> &cost_matrix);
 
+std::tuple<double, double, const LocalSearch *> FindBestLocalSearchGuidedLocalSearch(
+    const std::vector<std::unique_ptr<LocalSearch>> &local_search_list,
+    const std::vector<std::vector<std::size_t>> &original_node_records,
+    const std::vector<std::vector<double>> &cost_matrix,
+    const std::vector<std::vector<int>> &penalty_counter_matrix);
+
 #endif // LOCAL_SEARCH_H
