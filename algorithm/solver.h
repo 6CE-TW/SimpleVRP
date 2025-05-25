@@ -43,6 +43,7 @@ private:
 
   void PerformLocalSearchOnce();
   void PerformLocalSearchGreedy();
+  void PerformLocalSearchGuidedLocalSearch(std::atomic<bool> &time_flag);
   void PerformLocalSearch();
 
 public:
