@@ -23,7 +23,7 @@ private:
   double _cost;
   InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
   LocalSearchParameter local_search_parameter;
-  MetaheuristicStrategy metaheuristic_strategy = MetaheuristicStrategy::GREEDY;
+  MetaheuristicStrategy metaheuristic_strategy = MetaheuristicStrategy::GUIDED_LOCAL_SEARCH;
 
   std::vector<std::vector<Route>> route_records;
   std::vector<std::vector<std::size_t>> node_records;
