@@ -1,3 +1,6 @@
 [submodule "dependencies/json"]
 	path = dependencies/json
 	url = https://github.com/nlohmann/json.git
+[submodule "dependencies/cpr"]
+	path = dependencies/cpr
+	url = https://github.com/libcpr/cpr.git
