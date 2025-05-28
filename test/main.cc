@@ -7,23 +7,62 @@
 #include "data/data.h"
 #include "algorithm/solver.h"
 
+const bool TEST_CPR_WITH_HTTPBIN = false;
+
 int main()
 {
-  std::cout << "[INFO] Sending request to https://httpbin.org/get" << std::endl;
-  cpr::Response r = cpr::Get(cpr::Url{"https://httpbin.org/get"});
-  std::cout << "[INFO] Request done." << std::endl;
-
-  if (r.error)
+  if (TEST_CPR_WITH_HTTPBIN)
   {
-    std::cout << "r.error" << std::endl;
-    std::cerr << "[ERROR] CPR failed:\n"
-              << "  code    = " << static_cast<int>(r.error.code) << "\n"
-              << "  message = " << r.error.message << "\n";
+    std::cout << "[INFO] Sending request to https://httpbin.org/get" << std::endl;
+    cpr::Response r = cpr::Get(cpr::Url{"https://httpbin.org/get"});
+    std::cout << "[INFO] Request done." << std::endl;
+
+    if (r.error)
+    {
+      std::cout << "r.error" << std::endl;
+      std::cerr << "[ERROR] CPR failed:\n"
+                << "  code    = " << static_cast<int>(r.error.code) << "\n"
+                << "  message = " << r.error.message << "\n";
+    }
+    else
+    {
+      std::cout << "NOT r.error" << std::endl;
+      std::cout << "Status code: " << r.status_code << "\n";
+      try
+      {
+        // transform returned text to json object
+        nlohmann::json j = nlohmann::json::parse(r.text);
+
+        std::cout << "Response JSON:\n"
+                  << j.dump(2) << "\n";
+
+        // example: get certain data
+        if (j.contains("headers") && j["headers"].contains("Host"))
+        {
+          std::cout << "Host header: " << j["headers"]["Host"] << "\n";
+        }
+      }
+      catch (nlohmann::json::parse_error &e)
+      {
+        std::cerr << "[ERROR] JSON parse failed: " << e.what() << "\n";
+      }
+    }
   }
   else
   {
-    std::cout << "NOT r.error" << std::endl;
+    std::cout << "[INFO] Sending request to 35.194.198.57:8000/test" << std::endl;
+    cpr::Response r = cpr::Get(cpr::Url{"http://35.194.198.57:8000/test"});
+    std::cout << "[INFO] Request done." << std::endl;
+
+    if (r.status_code != 200)
+    {
+      std::cerr << "Failed to get data from server: " << r.status_code << "\n";
+      return 1;
+    }
+
     std::cout << "Status code: " << r.status_code << "\n";
+    std::cout << "Response body:\n"
+              << r.text << "\n";
     try
     {
       // transform returned text to json object
@@ -33,9 +72,9 @@ int main()
                 << j.dump(2) << "\n";
 
       // example: get certain data
-      if (j.contains("headers") && j["headers"].contains("Host"))
+      if (j.contains("message"))
       {
-        std::cout << "Host header: " << j["headers"]["Host"] << "\n";
+        std::cout << "message: " << j.at("message").get<std::string>() << "\n";
       }
     }
     catch (nlohmann::json::parse_error &e)
