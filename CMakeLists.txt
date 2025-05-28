@@ -20,6 +20,11 @@ enable_language(CUDA OPTIONAL)
 add_subdirectory(dependencies/cpr)
 
 # ========================
+# JSON settings
+# ========================
+add_subdirectory(dependencies/json)
+
+# ========================
 # Source files list
 # can add .cu files for CUDA later
 # ========================
@@ -41,7 +46,7 @@ add_executable(main ${SOURCE_FILES})
 # ========================
 # Link CPR
 # ========================
-target_link_libraries(main PRIVATE cpr::cpr)
+target_link_libraries(main PRIVATE cpr::cpr nlohmann_json)
 
 # ========================
 # CUDA settings (for future use)
