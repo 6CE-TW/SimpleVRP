@@ -2,6 +2,7 @@
 #include <vector>
 
 #include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 
 #include "data/data.h"
 #include "algorithm/solver.h"
@@ -23,7 +24,24 @@ int main()
   {
     std::cout << "NOT r.error" << std::endl;
     std::cout << "Status code: " << r.status_code << "\n";
-    std::cout << "Response body:\n" << r.text << "\n";
+    try
+    {
+      // transform returned text to json object
+      nlohmann::json j = nlohmann::json::parse(r.text);
+
+      std::cout << "Response JSON:\n"
+                << j.dump(2) << "\n";
+
+      // example: get certain data
+      if (j.contains("headers") && j["headers"].contains("Host"))
+      {
+        std::cout << "Host header: " << j["headers"]["Host"] << "\n";
+      }
+    }
+    catch (nlohmann::json::parse_error &e)
+    {
+      std::cerr << "[ERROR] JSON parse failed: " << e.what() << "\n";
+    }
   }
 
   srand(time(NULL));
