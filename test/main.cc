@@ -130,7 +130,7 @@ int main()
   Parameter data = ParameterWrapper::FromJson(str);
   std::cout << DumpParameter(data) << std::endl;
   
-  json j = ParameterToJson(data);
+  json j = ParameterToJsonList(data);
   std::cout<<j.dump()<<"\n";
 
   cpr::Response r = cpr::Post(
