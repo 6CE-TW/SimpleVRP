@@ -67,6 +67,35 @@ void SimpleVRPSolver::PrintNodeRecords()
   std::cout << "cost: " << this->_cost << "\n";
 }
 
+Solution SimpleVRPSolver::ExtractSolution()
+{
+  Solution solution = Solution();
+
+  for (std::size_t i = 0; i < this->_num_of_vehicles; ++i)
+  {
+    VehicleTaskRoute vehicle_task_route(i);
+    std::size_t route_length = node_records.at(i).size();
+
+    for (std::size_t j = 0; j < route_length; ++j)
+    {
+      std::size_t node = node_records.at(i).at(j);
+      Task task(j, node, this->_parameter.destinations.at(node));
+      
+      if(j > 0)
+      {
+        std::size_t prev_node = vehicle_task_route.tasks.back().index;
+        task.transit_distance = this->_cost_matrix[prev_node][node];
+      }
+
+      vehicle_task_route.tasks.push_back(task);
+    }
+
+    solution.vehicle_task_routes.push_back(vehicle_task_route);
+  }
+
+  return solution;
+}
+
 void SimpleVRPSolver::EncodeRouteToNodeRecord()
 {
   std::vector<std::vector<std::size_t>> node_records;

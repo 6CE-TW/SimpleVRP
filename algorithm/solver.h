@@ -7,6 +7,7 @@
 #include "algorithm/common_tools.h"
 #include "algorithm/parameter/parameter.h"
 
+#include "dao/solution.h"
 #include "wrapper/wrapper.h"
 
 struct Route
@@ -68,6 +69,7 @@ public:
   void Solve();
   void PrintSolution();
   void PrintNodeRecords();
+  Solution ExtractSolution();
 };
 
 #endif // SOLVER_H
