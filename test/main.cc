@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <sstream>
 
 #include <cpr/cpr.h>
@@ -16,6 +17,14 @@
 const bool TEST_CPR_WITH_HTTPBIN = false;
 const bool TEST_CPR_WITH_OSRM = false;
 const bool TEST_FROM_DUMMY_DATA = false;
+
+void SaveJson(std::string _save_path, nlohmann::json json)
+{
+  std::ofstream file(_save_path);
+  file.clear();
+  file << json.dump();
+  file.close();
+}
 
 int main()
 {
@@ -237,6 +246,8 @@ int main()
     cost_matrix = distance_matrix;
   }
 
+  std::cout << "Number of Node: " << cost_matrix.size() << "\n";
+
   SimpleVRPSolver simple_vrp_solver(cost_matrix, 4);
 
   if (TEST_FROM_DUMMY_DATA == false)
@@ -247,6 +258,11 @@ int main()
   simple_vrp_solver.Solve();
   simple_vrp_solver.PrintSolution();
   simple_vrp_solver.PrintNodeRecords();
+
+  auto timestamp = std::to_string(now_unixtime());
+  auto solution = simple_vrp_solver.ExtractSolution();
+
+  SaveJson("../test/test_result_"+timestamp+".json",solution.ToJson());
 
   return 0;
 }
