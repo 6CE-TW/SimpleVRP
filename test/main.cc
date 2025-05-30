@@ -238,6 +238,12 @@ int main()
   }
 
   SimpleVRPSolver simple_vrp_solver(cost_matrix, 4);
+
+  if (TEST_FROM_DUMMY_DATA == false)
+  {
+    simple_vrp_solver.SetParameter(data);
+  }
+
   simple_vrp_solver.Solve();
   simple_vrp_solver.PrintSolution();
   simple_vrp_solver.PrintNodeRecords();
