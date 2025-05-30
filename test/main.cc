@@ -128,10 +128,10 @@ int main()
   reader.close();
 
   Parameter data = ParameterWrapper::FromJson(str);
-  std::cout << DumpParameter(data) << std::endl;
+  // std::cout << DumpParameter(data) << std::endl;
   
   json j = ParameterToJsonList(data);
-  std::cout<<j.dump()<<"\n";
+  // std::cout<<j.dump()<<"\n";
 
   cpr::Response r = cpr::Post(
       cpr::Url{"http://35.194.198.57:8000/distance-matrix"},
