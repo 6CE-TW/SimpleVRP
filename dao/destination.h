@@ -20,7 +20,7 @@ public:
   json ToJson() const;
 };
 
-json Destination::ToJson() const
+inline json Destination::ToJson() const
 {
   json data;
 
