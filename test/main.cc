@@ -263,6 +263,7 @@ int main()
   auto solution = simple_vrp_solver.ExtractSolution();
 
   SaveJson("../test/results/test_result_"+timestamp+".json",solution.ToJson());
+  SaveJson("../test/results/test_result_"+timestamp+"_geojson.json",solution.ToGeoJson());
 
   return 0;
 }
