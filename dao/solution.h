@@ -16,15 +16,17 @@ class Task
 {
 public:
   std::int32_t sequence = -1;
+  std::size_t index = 0;
   Destination destination;
 
   double transit_distance = 0;
   double transit_time = 0;
 
   Task() {};
-  Task(std::int32_t sequence, Destination destination)
+  Task(std::int32_t sequence, std::size_t index, Destination destination)
   {
     this->sequence = sequence;
+    this->index = index;
     this->destination = destination;
   };
 
