@@ -5,8 +5,8 @@
 #define NLOHMANN_JSON_H_
 #endif
 
-#ifndef DESTINATION_H_
-#define DESTINATION_H_
+#ifndef DAO_DESTINATION_H_
+#define DAO_DESTINATION_H_
 
 using json = nlohmann::json;
 
