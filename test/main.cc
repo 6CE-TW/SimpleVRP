@@ -262,7 +262,7 @@ int main()
   auto timestamp = std::to_string(now_unixtime());
   auto solution = simple_vrp_solver.ExtractSolution();
 
-  SaveJson("../test/test_result_"+timestamp+".json",solution.ToJson());
+  SaveJson("../test/results/test_result_"+timestamp+".json",solution.ToJson());
 
   return 0;
 }

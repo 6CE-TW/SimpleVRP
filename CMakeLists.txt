@@ -45,6 +45,17 @@ set(SOURCE_FILES
 add_executable(main ${SOURCE_FILES})
 
 # ========================
+# Create results directory
+# ========================
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/../test/results")
+
+add_custom_target(make_result_dir
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/../test/results"
+)
+
+add_dependencies(main make_result_dir)
+
+# ========================
 # Link CPR
 # ========================
 target_link_libraries(main PRIVATE cpr::cpr nlohmann_json)
