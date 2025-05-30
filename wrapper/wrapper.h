@@ -93,12 +93,22 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
   return parameter;
 };
 
-json ParameterToJson(const Parameter &param)
+json ParameterToJsonDict(const Parameter &param)
 {
   json j_array = json::array();
   for (const auto &dest : param.destinations)
   {
     j_array.push_back(dest.ToJson());
+  }
+  return j_array;
+}
+
+json ParameterToJsonList(const Parameter &param)
+{
+  json j_array = json::array();
+  for (const auto &dest : param.destinations)
+  {
+    j_array.push_back({dest.lon, dest.lat});
   }
   return j_array;
 }
