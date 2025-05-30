@@ -36,6 +36,7 @@ set(SOURCE_FILES
     algorithm/local_search/tools.cc
     algorithm/local_search/local_search.cc
     algorithm/parameter/parameter.cc
+    wrapper/wrapper.cc
 )
 
 # ========================
