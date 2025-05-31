@@ -17,6 +17,7 @@
 const bool TEST_CPR_WITH_HTTPBIN = false;
 const bool TEST_CPR_WITH_OSRM = false;
 const bool TEST_FROM_DUMMY_DATA = false;
+const bool PRINT_DISTANCE_MATRIX = false;
 
 void SaveJson(std::string _save_path, nlohmann::json json)
 {
@@ -148,14 +149,17 @@ int main()
       cpr::Header{{"Content-Type", "application/json"}},
       cpr::Body{j.dump()});
 
-  if (r.status_code == 200)
+  if (PRINT_DISTANCE_MATRIX)
   {
-    auto res = json::parse(r.text);
-    std::cout << res.dump(2) << std::endl;
-  }
-  else
-  {
-    std::cerr << "Request failed: " << r.status_code << std::endl;
+    if (r.status_code == 200)
+    {
+      auto res = json::parse(r.text);
+      std::cout << res.dump(2) << std::endl;
+    }
+    else
+    {
+      std::cerr << "Request failed: " << r.status_code << std::endl;
+    }
   }
 
   std::vector<std::vector<double>> cost_matrix;
@@ -222,17 +226,20 @@ int main()
     //   points.push_back(info);
     // }
 
-    // Print Result
-    std::cout << "Distance Matrix: " << std::endl;
-    for (size_t i = 0; i < distance_matrix.size(); ++i)
+    if (PRINT_DISTANCE_MATRIX)
     {
-      for (size_t j = 0; j < distance_matrix[i].size(); ++j)
+      // Print Result
+      std::cout << "Distance Matrix: " << std::endl;
+      for (size_t i = 0; i < distance_matrix.size(); ++i)
       {
-        std::cout << distance_matrix[i][j] << " ";
+        for (size_t j = 0; j < distance_matrix[i].size(); ++j)
+        {
+          std::cout << distance_matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
       }
       std::cout << std::endl;
     }
-    std::cout << std::endl;
 
     // std::cout << "\nLocation Information:" << std::endl;
     // for (size_t i = 0; i < points.size(); ++i)
