@@ -276,6 +276,30 @@ public:
     data["features"] = features_json;
     return data;
   }
+
+  json ToGetRouteJson()
+  {
+    json multi_routes_json = json::array();
+    std::size_t num_of_vehicle = this->vehicle_task_routes.size();
+
+    for (std::size_t i = 0; i < num_of_vehicle; ++i)
+    {
+      json route_json;
+      const VehicleTaskRoute vehicle_task_route = vehicle_task_routes.at(i);
+      for (std::size_t j = 0; j < vehicle_task_route.tasks.size(); ++j)
+      {
+        const Destination destination = vehicle_task_route.tasks.at(j).destination;
+        json feature;
+        feature["name"] = destination.name;
+        feature["lat"] = destination.lat;
+        feature["lon"] = destination.lon;
+        route_json.push_back(feature);
+
+      }
+      multi_routes_json.push_back(route_json);
+    }
+    return multi_routes_json;
+  }
 };
 
 #endif
