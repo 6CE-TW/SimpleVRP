@@ -135,7 +135,8 @@ public:
     int rounded = std::clamp(static_cast<int>(std::round(number)), 0, 255);
     std::ostringstream ss;
     ss << std::uppercase << std::hex;
-    if (rounded < 16) ss << '0';
+    if (rounded < 16)
+      ss << '0';
     ss << rounded;
     return ss.str();
   }
@@ -220,7 +221,7 @@ public:
             ]
         }
         */
-        Destination destination = vehicle_task_route.tasks.at(j).destination;
+        const Destination destination = vehicle_task_route.tasks.at(j).destination;
 
         json feature;
         feature["type"] = "Feature";
