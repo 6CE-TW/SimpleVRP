@@ -7,6 +7,9 @@
 #include "algorithm/common_tools.h"
 #include "algorithm/parameter/parameter.h"
 
+#include "dao/solution.h"
+#include "wrapper/wrapper.h"
+
 struct Route
 {
   std::size_t prev;
@@ -29,6 +32,8 @@ private:
   std::vector<std::vector<std::size_t>> node_records;
 
   int64_t solve_start_unixtime = 0;
+
+  Parameter _parameter;
 
   inline void RecordSolverStartTime()
   {
@@ -56,10 +61,15 @@ public:
   }
 
   void SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list);
+  inline void SetParameter(const Parameter parameter)
+  {
+    this->_parameter = parameter;
+  }
 
   void Solve();
   void PrintSolution();
   void PrintNodeRecords();
+  Solution ExtractSolution();
 };
 
 #endif // SOLVER_H

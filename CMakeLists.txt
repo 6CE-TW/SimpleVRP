@@ -20,6 +20,11 @@ enable_language(CUDA OPTIONAL)
 add_subdirectory(dependencies/cpr)
 
 # ========================
+# JSON settings
+# ========================
+add_subdirectory(dependencies/json)
+
+# ========================
 # Source files list
 # can add .cu files for CUDA later
 # ========================
@@ -31,6 +36,7 @@ set(SOURCE_FILES
     algorithm/local_search/tools.cc
     algorithm/local_search/local_search.cc
     algorithm/parameter/parameter.cc
+    wrapper/wrapper.cc
 )
 
 # ========================
@@ -39,9 +45,20 @@ set(SOURCE_FILES
 add_executable(main ${SOURCE_FILES})
 
 # ========================
+# Create results directory
+# ========================
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/../test/results")
+
+add_custom_target(make_result_dir
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/../test/results"
+)
+
+add_dependencies(main make_result_dir)
+
+# ========================
 # Link CPR
 # ========================
-target_link_libraries(main PRIVATE cpr::cpr)
+target_link_libraries(main PRIVATE cpr::cpr nlohmann_json)
 
 # ========================
 # CUDA settings (for future use)
@@ -65,6 +82,8 @@ target_include_directories(main PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/algorithm
     ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/parameter
     ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/local_search
+    ${CMAKE_CURRENT_SOURCE_DIR}/dao
+    ${CMAKE_CURRENT_SOURCE_DIR}/wrapper
     ${CMAKE_CURRENT_SOURCE_DIR}/test
 )
 
