@@ -140,7 +140,7 @@ public:
     return ss.str();
   }
 
-  std::vector<std::vector<std::string>> GenerateVehicleColor(int num_of_vehicle)
+  std::vector<std::vector<std::string>> GenerateVehicleColor(int num_of_vehicle, bool calculate_for_line = false)
   {
     std::vector<std::vector<std::string>> output;
 
@@ -149,6 +149,12 @@ public:
       double hue = i * 360.0 / num_of_vehicle;
       double saturation = 0.5;
       double value = 1.0;
+      
+      if(calculate_for_line)
+      {
+        saturation = 1.0;
+        value = 0.5;
+      }
 
       int hue_region = static_cast<int>(hue / 60.0) % 6;
       double f = (hue / 60.0) - hue_region;
