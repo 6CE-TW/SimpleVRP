@@ -220,6 +220,8 @@ public:
         feature["type"] = "Feature";
         feature["properties"]["marker-color"] = "#" + color_hex;
         feature["properties"]["marker-size"] = "medium";
+        feature["properties"]["marker-symbol"] = "";
+        feature["properties"]["name"] = destination.name;
         feature["geometry"]["type"] = "Point";
         feature["geometry"]["coordinates"] = {destination.lon, destination.lat};
         features_json.push_back(feature);
