@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Leaflet Route Map with Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    html,
+    body,
+    #map {
+      height: 100%;
+      margin: 0;
+    }
+
+    .leaflet-tile {
+      filter: brightness(120%) saturate(30%);
+    }
+
+    /* White semi-transparent overlay */
+    .tile-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0.3;
+      /* Adjust whiteness here */
+      pointer-events: none;
+      z-index: 200;
+      /* Must be higher than tileLayer (z=100), but lower than vector/marker (z=400–600) */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script>
+    const map = L.map('map').setView([25.0478, 121.5171], 13);
+
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    // Add white transparent overlay right after map initialization
+    const mapPane = document.querySelector('.leaflet-map-pane');
+    const overlayDiv = document.createElement('div');
+    overlayDiv.className = 'tile-overlay';
+    mapPane.appendChild(overlayDiv);
+
+    // Load and display geojson data
+    fetch("http://localhost:8080/get-navigation")
+      .then(res => res.json())
+      .then(geojson => {
+        const lineLayer = L.geoJSON(geojson, {
+          filter: f => f.geometry.type === "LineString",
+          style: feature => ({
+            color: feature.properties?.stroke || "#3388ff",
+            weight: feature.properties?.["stroke-width"] || 3,
+            opacity: feature.properties?.["stroke-opacity"] || 0.8
+          })
+        }).addTo(map);
+
+        const pointLayer = L.geoJSON(geojson, {
+          filter: f => f.geometry.type === "Point",
+          pointToLayer: (feature, latlng) => {
+            const color = feature.properties?.["marker-color"] || "#3388ff";
+            const marker = L.circleMarker(latlng, {
+              radius: 8,
+              fillColor: color,
+              stroke: false,
+              color: "#000",
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.8
+            });
+            marker.bindPopup(`Name: ${feature.properties?.name}<br>Seq: ${feature.properties?.serial}`);
+            marker.bindTooltip(`No.${feature.properties?.serial}`, { direction: 'top' });
+            return marker;
+          }
+        }).addTo(map);
+
+        // zoom fit both layers
+        const allLayers = L.featureGroup([lineLayer, pointLayer]);
+        map.fitBounds(allLayers.getBounds());
+      })
+
+      .catch(err => {
+        alert("Load error: " + err.message);
+        console.error(err);
+      });
+  </script>
+</body>
+
+</html>
