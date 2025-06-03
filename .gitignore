@@ -1,4 +1,8 @@
+# for built files
 .vscode
 build
 output
+
+# for json results
 test/results
+server/navigation_data.json
