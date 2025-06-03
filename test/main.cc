@@ -344,5 +344,10 @@ int main()
   navigation_geo_json["features"] = features_json;
   SaveJson("../test/results/test_result_" + timestamp + "_navigation.json", navigation_geo_json);
 
+  cpr::Response local_res = cpr::Post(
+      cpr::Url{"http://localhost:8080/set-navigation"},
+      cpr::Header{{"Content-Type", "application/json"}},
+      cpr::Body{navigation_geo_json.dump()});
+
   return 0;
 }
