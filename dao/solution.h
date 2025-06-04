@@ -60,7 +60,7 @@ public:
     this->vehicle = vehicle;
   };
 
-  std::int64_t total_transit_distance()
+  std::int64_t total_transit_distance() const
   {
     std::int64_t sum = 0;
     for (std::size_t i = 0; i < this->tasks.size(); ++i)
@@ -71,7 +71,7 @@ public:
     return sum;
   };
 
-  std::int64_t total_transit_time()
+  std::int64_t total_transit_time() const
   {
     std::int64_t sum = 0;
     for (std::size_t i = 0; i < this->tasks.size(); ++i)

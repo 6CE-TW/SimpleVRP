@@ -323,6 +323,7 @@ int main()
       feature["properties"]["marker-size"] = "medium";
       feature["properties"]["name"] = destination.name;
       feature["properties"]["serial"] = j;
+      feature["properties"]["vehicle_id"] = i + 1;
       feature["geometry"]["type"] = "Point";
       feature["geometry"]["coordinates"] = {destination.lon, destination.lat};
       features_json.push_back(feature);
@@ -337,6 +338,10 @@ int main()
     line_feature["properties"]["stroke"] = "#" + line_color_hex;
     line_feature["properties"]["stroke-width"] = 3;
     line_feature["properties"]["stroke-opacity"] = 0.8;
+    line_feature["properties"]["vehicle_id"] = i + 1;
+    line_feature["information"]["distance"] = vehicle_task_route.total_transit_distance();
+    line_feature["information"]["duration"] = vehicle_task_route.total_transit_time();
+    line_feature["information"]["node_count"] = vehicle_task_route.tasks.size();
     line_feature["geometry"]["type"] = "LineString";
     line_feature["geometry"] = single_navigation_json["routes"][0]["geometry"];
     features_json.push_back(line_feature);
