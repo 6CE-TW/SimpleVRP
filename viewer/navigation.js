@@ -38,6 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const vehicleLayers = {};
   const layerVisibility = {};
+  const vehicleInfoMap = {};
   let currentTab = "all";
 
   const updateVehicleVisibility = () => {
@@ -117,6 +118,26 @@ window.addEventListener('DOMContentLoaded', () => {
       };
       container.appendChild(btn);
     });
+
+    // Display Vehicle Information
+    if (currentTab !== "all" && vehicleLayers[currentTab]) {
+      const info = document.createElement("div");
+      info.className = "vehicle-info";
+      info.style.marginTop = "10px";
+      info.style.padding = "6px";
+      info.style.fontSize = "13px";
+      info.style.borderTop = "1px solid #ccc";
+
+      const infoData = vehicleInfoMap[currentTab] || {};
+      info.innerHTML = `
+        <strong>Vehicle ${currentTab} Information</strong><br/>
+        Number of Nodes: ${infoData.node_count ?? "-"}<br/>
+        Route Length: ${infoData.distance / 1000 ?? "-"} KM<br/>
+        Estimated Time: ${infoData.duration ?? "-"} min
+      `;
+
+      container.appendChild(info);
+    }
   };
 
   fetch("http://localhost:8080/get-navigation")
@@ -167,6 +188,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const group = L.layerGroup([lineLayer, pointLayer]);
         vehicleLayers[id] = group;
         layerVisibility[id] = true;
+
+        const infoLine = data.lines[0]?.information || {};
+        vehicleInfoMap[id] = {
+          distance: infoLine.distance ?? 0,
+          duration: infoLine.duration ?? 0,
+          node_count: infoLine.node_count ?? 0
+        };
       });
 
       const vehicleIds = Object.keys(vehicleLayers);
