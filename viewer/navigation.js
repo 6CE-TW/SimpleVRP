@@ -13,8 +13,8 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   let isNight = false;
-  dayTile.addTo(map); // Initialize as Day mode
-  
+  dayTile.addTo(map);
+
   const toggleButton = document.getElementById('toggle-theme');
   toggleButton.addEventListener('click', () => {
     if (isNight) {
@@ -31,32 +31,111 @@ window.addEventListener('DOMContentLoaded', () => {
     isNight = !isNight;
   });
 
-
-  // 可選：白色 overlay 仍可保留
   const mapPane = document.querySelector('.leaflet-map-pane');
   const overlayDiv = document.createElement('div');
   overlayDiv.className = 'tile-overlay';
   mapPane.appendChild(overlayDiv);
 
   const vehicleLayers = {};
+  const layerVisibility = {};
+  let currentTab = "all";
+
+  const updateVehicleVisibility = () => {
+    Object.keys(vehicleLayers).forEach(id => {
+      map.removeLayer(vehicleLayers[id]);
+    });
+
+    if (currentTab === "all") {
+      Object.entries(vehicleLayers).forEach(([id, layer]) => {
+        if (layerVisibility[id]) {
+          layer.addTo(map);
+        }
+      });
+    } else {
+      const layer = vehicleLayers[currentTab];
+      if (layer) {
+        layer.addTo(map);
+        const bounds = layer.getBounds?.();
+        if (bounds) map.fitBounds(bounds);
+      }
+    }
+  };
+
+  const renderSidebarButtons = (vehicleIds) => {
+    const container = document.getElementById("sidebar-buttons");
+    container.innerHTML = "";
+
+    // All button
+    const allButton = document.createElement("button");
+    allButton.textContent = "All";
+    allButton.className = "vehicle-button" + (currentTab === "all" ? " active" : "");
+    allButton.onclick = () => {
+      currentTab = "all";
+      updateVehicleVisibility();
+      renderSidebarButtons(vehicleIds);
+    };
+    container.appendChild(allButton);
+
+    // Checkbox group (only when All is selected)
+    if (currentTab === "all") {
+      const group = document.createElement("div");
+      group.className = "vehicle-checkbox-group";
+
+      vehicleIds.forEach(id => {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `checkbox_${id}`;
+        checkbox.checked = layerVisibility[id];
+
+        checkbox.onchange = () => {
+          layerVisibility[id] = checkbox.checked;
+          updateVehicleVisibility();
+        };
+
+        const label = document.createElement("label");
+        label.htmlFor = checkbox.id;
+        label.textContent = `Vehicle ${id}`;
+
+        const row = document.createElement("div");
+        row.appendChild(checkbox);
+        row.appendChild(label);
+        group.appendChild(row);
+      });
+
+      container.appendChild(group);
+    }
+
+    // Vehicle buttons
+    vehicleIds.forEach(id => {
+      const btn = document.createElement("button");
+      btn.className = "vehicle-button" + (currentTab === id ? " active" : "");
+      btn.textContent = `Vehicle ${id}`;
+      btn.onclick = () => {
+        currentTab = id;
+        updateVehicleVisibility();
+        renderSidebarButtons(vehicleIds);
+      };
+      container.appendChild(btn);
+    });
+  };
 
   fetch("http://localhost:8080/get-navigation")
     .then(res => res.json())
     .then(geojson => {
       const vehicleData = {};
+
       geojson.features.forEach(feature => {
         const id = feature.properties?.vehicle_id || "unknown";
         if (!vehicleData[id]) {
           vehicleData[id] = { lines: [], points: [] };
         }
+
         if (feature.geometry.type === "LineString") {
           vehicleData[id].lines.push(feature);
         } else if (feature.geometry.type === "Point") {
           vehicleData[id].points.push(feature);
         }
       });
-
-      const allLayers = [];
 
       Object.entries(vehicleData).forEach(([id, data]) => {
         const lineLayer = L.geoJSON(data.lines, {
@@ -85,39 +164,32 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        const group = L.layerGroup([lineLayer, pointLayer]).addTo(map);
+        const group = L.layerGroup([lineLayer, pointLayer]);
         vehicleLayers[id] = group;
-
-        lineLayer.eachLayer(l => allLayers.push(l));
-        pointLayer.eachLayer(p => allLayers.push(p));
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = `checkbox_${id}`;
-        checkbox.checked = true;
-
-        const label = document.createElement("label");
-        label.htmlFor = checkbox.id;
-        label.textContent = `Vehicle ${id}`;
-
-        checkbox.addEventListener("change", () => {
-          if (checkbox.checked) {
-            group.addTo(map);
-          } else {
-            map.removeLayer(group);
-          }
-        });
-
-        const container = document.getElementById("vehicle-list");
-        container.appendChild(checkbox);
-        container.appendChild(label);
-        container.appendChild(document.createElement("br"));
+        layerVisibility[id] = true;
       });
 
-      const featureGroup = L.featureGroup(allLayers);
-      map.fitBounds(featureGroup.getBounds());
-    })
+      const vehicleIds = Object.keys(vehicleLayers);
+      renderSidebarButtons(vehicleIds);
+      updateVehicleVisibility();
 
+      const allSubLayers = [];
+
+      Object.values(vehicleLayers).forEach(group => {
+        group.eachLayer(layer => {
+          if (layer.getBounds) {
+            allSubLayers.push(layer);
+          } else if (layer.getLatLng) {
+            allSubLayers.push(L.featureGroup([layer]));
+          }
+        });
+      });
+
+      if (allSubLayers.length > 0) {
+        const featureGroup = L.featureGroup(allSubLayers);
+        map.fitBounds(featureGroup.getBounds());
+      }
+    })
     .catch(err => {
       alert("Load error: " + err.message);
       console.error(err);
