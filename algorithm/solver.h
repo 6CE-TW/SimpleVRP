@@ -52,19 +52,16 @@ private:
   void PerformLocalSearch();
 
 public:
-  SimpleVRPSolver(std::vector<std::vector<double>> cost_matrix, std::size_t num_of_vehicles)
+  SimpleVRPSolver(Parameter parameter, std::vector<std::vector<double>> cost_matrix)
   {
+    this->_parameter = parameter;
     this->_cost_matrix = cost_matrix;
-    this->_num_of_vehicles = num_of_vehicles;
-    this->_num_of_nodes = cost_matrix.size();
-    this->route_records = std::vector<std::vector<Route>>(num_of_vehicles, std::vector<Route>{});
+    this->_num_of_vehicles = parameter.vehicles.size();
+    this->_num_of_nodes = parameter.destinations.size();
+    this->route_records = std::vector<std::vector<Route>>(parameter.vehicles.size(), std::vector<Route>{});
   }
 
   void SetUsableLocalSearch(std::unordered_map<LocalSearchEnum, bool> local_search_list);
-  inline void SetParameter(const Parameter parameter)
-  {
-    this->_parameter = parameter;
-  }
 
   void Solve();
   void PrintSolution();
