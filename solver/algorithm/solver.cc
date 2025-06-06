@@ -86,7 +86,9 @@ Solution SimpleVRPSolver::ExtractSolution()
       if(j > 0)
       {
         std::size_t prev_node = vehicle_task_route.tasks.back().index;
-        task.transit_distance = this->_cost_matrix[prev_node][node];
+        task.transit_distance = this->_distance_matrix[prev_node][node];
+        task.transit_time = this->_duration_matrix[prev_node][node];
+        task.transit_cost = this->_cost_matrix[prev_node][node];
       }
 
       vehicle_task_route.tasks.push_back(task);

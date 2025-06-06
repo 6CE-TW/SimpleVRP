@@ -24,6 +24,7 @@ public:
 
   double transit_distance = 0;
   double transit_time = 0;
+  double transit_cost = 0;
 
   Task() {};
   Task(std::int32_t sequence, std::size_t index, Destination destination)
@@ -41,6 +42,7 @@ public:
     data["name"] = destination.name;
     data["transit_distance"] = transit_distance;
     data["transit_time"] = transit_time;
+    data["transit_cost"] = transit_cost;
     data["lat"] = destination.lat;
     data["lon"] = destination.lon;
 
@@ -83,6 +85,17 @@ public:
     return sum;
   };
 
+  std::int64_t total_transit_cost() const
+  {
+    std::int64_t sum = 0;
+    for (std::size_t i = 0; i < this->tasks.size(); ++i)
+    {
+      sum += this->tasks[i].transit_cost;
+    }
+
+    return sum;
+  };
+
   json ToJson()
   {
     json data;
@@ -96,6 +109,7 @@ public:
 
     data["total_transit_distance"] = this->total_transit_distance();
     data["total_transit_time"] = this->total_transit_time();
+    data["total_transit_cost"] = this->total_transit_cost();
 
     return data;
   };
