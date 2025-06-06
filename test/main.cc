@@ -146,7 +146,7 @@ int main()
   // std::cout<<j.dump()<<"\n";
 
   cpr::Response r = cpr::Post(
-      cpr::Url{"http://35.194.198.57:8000/distance-matrix"},
+      cpr::Url{"http://35.194.198.57:8000/cost-matrix"},
       cpr::Header{{"Content-Type", "application/json"}},
       cpr::Body{j.dump()});
 
@@ -206,27 +206,16 @@ int main()
       distance_matrix.push_back(distance_row);
     }
 
-    // std::vector<std::vector<double>> duration_matrix;
-    // for (const auto &row : res["duration"])
-    // {
-    //   std::vector<double> duration_row;
-    //   for (const auto &value : row)
-    //   {
-    //     duration_row.push_back(value.get<double>());
-    //   }
-    //   duration_matrix.push_back(duration_row);
-    // }
-
-    // // 2. Take information of each node ("sources" or "destinations", they are symmetric)
-    // std::vector<PointInfo> points;
-    // for (const auto &p : res["sources"])
-    // {
-    //   PointInfo info;
-    //   info.name = p.value("name", "");
-    //   info.lon = p["location"][0].get<double>();
-    //   info.lat = p["location"][1].get<double>();
-    //   points.push_back(info);
-    // }
+    std::vector<std::vector<double>> duration_matrix;
+    for (const auto &row : res["durations"])
+    {
+      std::vector<double> duration_row;
+      for (const auto &value : row)
+      {
+        duration_row.push_back(value.get<double>());
+      }
+      duration_matrix.push_back(duration_row);
+    }
 
     if (PRINT_DISTANCE_MATRIX)
     {
@@ -241,18 +230,30 @@ int main()
         std::cout << std::endl;
       }
       std::cout << std::endl;
+
+      std::cout << "Duration Matrix: " << std::endl;
+      for (size_t i = 0; i < duration_matrix.size(); ++i)
+      {
+        for (size_t j = 0; j < duration_matrix[i].size(); ++j)
+        {
+          std::cout << duration_matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+      }
+      std::cout << std::endl;
     }
 
-    // std::cout << "\nLocation Information:" << std::endl;
-    // for (size_t i = 0; i < points.size(); ++i)
-    // {
-    //   std::cout << "Node " << i << ": "
-    //             << points[i].name << " "
-    //             << "(" << points[i].lat << ", " << points[i].lon << ")"
-    //             << std::endl;
-    // }
-
-    cost_matrix = distance_matrix;
+    std::pair<double, double> cost_ratio = data.cost_ratio;
+    for (std::size_t i = 0; i < data.destinations.size(); ++i)
+    {
+      std::vector<double> cost_row;
+      for (std::size_t j = 0; j < data.destinations.size(); ++j)
+      {
+        double weighted_cost = distance_matrix[i][j] * cost_ratio.first + duration_matrix[i][j] * cost_ratio.second;
+        cost_row.push_back(weighted_cost);
+      }
+      cost_matrix.push_back(cost_row);
+    }
   }
 
   std::cout << "Number of Node: " << cost_matrix.size() << "\n";

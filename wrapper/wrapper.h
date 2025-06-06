@@ -16,6 +16,7 @@ using json = nlohmann::json;
 
 struct Parameter
 {
+  std::pair<double, double> cost_ratio = {1, 1};
   std::vector<Destination> destinations;
   std::vector<Vehicle> vehicles;
 };
