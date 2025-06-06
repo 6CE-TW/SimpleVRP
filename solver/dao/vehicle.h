@@ -14,24 +14,24 @@ using json = nlohmann::json;
 class Vehicle
 {
 public:
-    std::string id = "";
+  std::string id = "";
 
-    std::string location_start = "";
-    std::string location_end = "";
+  std::string location_start = "";
+  std::string location_end = "";
 
-    Vehicle() {};
+  Vehicle() {};
 
-    json ToJson() const;
+  json ToJson() const;
 };
 
 inline json Vehicle::ToJson() const
 {
-    json data;
+  json data;
 
-    data["id"] = this->id;
-    data["location"] = {this->location_start, this->location_end};
+  data["id"] = this->id;
+  data["location"] = {this->location_start, this->location_end};
 
-    return data;
+  return data;
 }
 
 static const Vehicle DummyVehicle = Vehicle();
