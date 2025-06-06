@@ -8,7 +8,6 @@
 #include "solver/algorithm/solver.h"
 #include "solver/wrapper/wrapper.h"
 
-#include "solver/utilities.h"
 #include "solver/config.h"
 
 int main()

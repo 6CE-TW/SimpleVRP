@@ -21,6 +21,7 @@ struct OsrmMatrixResult
   std::vector<std::vector<double>> duration_matrix;
 };
 
+int VerifyCprCondition();
 OsrmMatrixResult GenerateOsrmMatrixResult(Parameter parameter);
 int SetNavigationToServer(Solution solution, std::string timestamp);
 
