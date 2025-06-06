@@ -13,8 +13,8 @@
 #endif
 
 #include "data/data.h"
-#include "algorithm/solver.h"
-#include "wrapper/wrapper.h"
+#include "solver/algorithm/solver.h"
+#include "solver/wrapper/wrapper.h"
 
 #include "solver/utilities.h"
 #include "solver/config.h"

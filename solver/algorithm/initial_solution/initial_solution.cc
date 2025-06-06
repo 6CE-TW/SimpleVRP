@@ -1,7 +1,7 @@
 #include <set>
 
-#include "algorithm/solver.h"
-#include "algorithm/initial_solution/initial_solution.h"
+#include "solver/algorithm/solver.h"
+#include "solver/algorithm/initial_solution/initial_solution.h"
 
 std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_solution_strategy)
 {

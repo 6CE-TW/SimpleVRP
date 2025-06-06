@@ -2,13 +2,13 @@
 #define SOLVER_H
 
 #include <vector>
-#include "algorithm/initial_solution/initial_solution.h"
-#include "algorithm/local_search/metaheuristic.h"
-#include "algorithm/common_tools.h"
-#include "algorithm/parameter/parameter.h"
+#include "solver/algorithm/initial_solution/initial_solution.h"
+#include "solver/algorithm/local_search/metaheuristic.h"
+#include "solver/algorithm/common_tools.h"
+#include "solver/algorithm/parameter/parameter.h"
 
-#include "dao/solution.h"
-#include "wrapper/wrapper.h"
+#include "solver/dao/solution.h"
+#include "solver/wrapper/wrapper.h"
 
 struct Route
 {

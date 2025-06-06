@@ -1,11 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include <future>
-#include "algorithm/solver.h"
-#include "algorithm/initial_solution/initial_solution.h"
-#include "algorithm/local_search/local_search.h"
-#include "algorithm/parameter/parameter.h"
-#include "algorithm/config.h"
+#include "solver/algorithm/solver.h"
+#include "solver/algorithm/initial_solution/initial_solution.h"
+#include "solver/algorithm/local_search/local_search.h"
+#include "solver/algorithm/parameter/parameter.h"
+#include "solver/algorithm/config.h"
 
 // TODO: use glog to print log
 // #include <glog/logging.h>

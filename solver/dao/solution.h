@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-#include "dao/destination.h"
+#include "solver/dao/destination.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>

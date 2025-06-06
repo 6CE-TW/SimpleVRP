@@ -1,4 +1,4 @@
-#include "wrapper/wrapper.h"
+#include "solver/wrapper/wrapper.h"
 
 std::string DumpParameter(Parameter parameter)
 {

@@ -1,5 +1,5 @@
 #include <string>
-#include "config.h"
+#include "solver/config.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>

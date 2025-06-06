@@ -1,4 +1,4 @@
-#include "algorithm/parameter/parameter.h"
+#include "solver/algorithm/parameter/parameter.h"
 
 LocalSearchParameter::LocalSearchParameter()
 {

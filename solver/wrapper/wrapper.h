@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 
-#include "dao/destination.h"
-#include "dao/vehicle.h"
+#include "solver/dao/destination.h"
+#include "solver/dao/vehicle.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>
