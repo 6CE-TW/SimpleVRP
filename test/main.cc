@@ -164,6 +164,7 @@ int main()
   }
 
   std::vector<std::vector<double>> cost_matrix;
+  std::size_t num_of_vehicle = data.vehicles.size();
   if (TEST_FROM_DUMMY_DATA)
   {
     srand(time(NULL));
@@ -256,7 +257,7 @@ int main()
 
   std::cout << "Number of Node: " << cost_matrix.size() << "\n";
 
-  SimpleVRPSolver simple_vrp_solver(cost_matrix, 4);
+  SimpleVRPSolver simple_vrp_solver(cost_matrix, num_of_vehicle);
 
   if (TEST_FROM_DUMMY_DATA == false)
   {

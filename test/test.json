@@ -285,5 +285,35 @@
       "lon": 121.61675086286822,
       "lat": 25.055471640734236
     }
+  ],
+  "vehicles": [
+    {
+      "id": "car-id-1",
+      "location": [
+        "vehicle-start-0",
+        "vehicle-end-0"
+      ]
+    },
+    {
+      "id": "car-id-2",
+      "location": [
+        "vehicle-start-0",
+        "vehicle-end-0"
+      ]
+    },
+    {
+      "id": "car-id-3",
+      "location": [
+        "vehicle-start-0",
+        "vehicle-end-0"
+      ]
+    },
+    {
+      "id": "car-id-4",
+      "location": [
+        "vehicle-start-0",
+        "vehicle-end-0"
+      ]
+    }
   ]
 }

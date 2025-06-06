@@ -41,6 +41,32 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
   }
   // #endregion destinations
 
+  // #region vehicles
+  if (json_obj.contains("vehicles"))
+  {
+    auto json_vehicles = json_obj.at("vehicles");
+
+    for (std::size_t i = 0; i < json_vehicles.size(); ++i)
+    {
+      auto elem = json_vehicles.at(i);
+
+      auto vehicle = Vehicle();
+      vehicle.id = elem.value("id", "");
+
+      if (elem.contains("location"))
+      {
+        auto json_location = elem.at("location");
+
+        vehicle.location_start = json_location.at(0).get<std::string>();
+        vehicle.location_end = json_location.at(1).get<std::string>();
+      }
+
+      // append into struct
+      parameter.vehicles.push_back(vehicle);
+    }
+  }
+  // #endregion vehicles
+
   return parameter;
 };
 

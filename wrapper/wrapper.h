@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "dao/destination.h"
+#include "dao/vehicle.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>
@@ -16,6 +17,7 @@ using json = nlohmann::json;
 struct Parameter
 {
   std::vector<Destination> destinations;
+  std::vector<Vehicle> vehicles;
 };
 
 std::string DumpParameter(Parameter parameter);
