@@ -35,6 +35,11 @@ private:
 
   Parameter _parameter;
 
+  inline Vehicle vehicle(std::size_t index)
+  {
+    return this->_parameter.vehicles.at(index);
+  }
+
   inline void RecordSolverStartTime()
   {
     this->solve_start_unixtime = now_unixtime_milliseconds();

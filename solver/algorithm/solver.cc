@@ -73,7 +73,9 @@ Solution SimpleVRPSolver::ExtractSolution()
 
   for (std::size_t i = 0; i < this->_num_of_vehicles; ++i)
   {
-    VehicleTaskRoute vehicle_task_route(i);
+    Vehicle vehicle = this->vehicle(i);
+    VehicleTaskRoute vehicle_task_route(vehicle);
+
     std::size_t route_length = node_records.at(i).size();
 
     for (std::size_t j = 0; j < route_length; ++j)

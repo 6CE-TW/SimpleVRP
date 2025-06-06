@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "solver/dao/destination.h"
+#include "solver/dao/vehicle.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>
@@ -51,11 +52,11 @@ class VehicleTaskRoute
 {
 public:
   // Vehicle vehicle;
-  std::size_t vehicle;
+  Vehicle vehicle;
   std::vector<Task> tasks;
 
   VehicleTaskRoute() {};
-  VehicleTaskRoute(std::size_t vehicle)
+  VehicleTaskRoute(Vehicle vehicle)
   {
     this->vehicle = vehicle;
   };
@@ -86,7 +87,7 @@ public:
   {
     json data;
 
-    data["vehicle_id"] = this->vehicle;
+    data["vehicle_id"] = this->vehicle.id;
 
     std::vector<json> _tasks(this->tasks.size());
     std::transform(this->tasks.begin(), this->tasks.end(), _tasks.begin(), [](Task t)
