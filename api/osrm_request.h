@@ -12,6 +12,7 @@
 #define NLOHMANN_JSON_H_
 #endif
 
+#include "solver/dao/solution.h"
 #include "solver/wrapper/wrapper.h"
 
 struct OsrmRequestResult
@@ -21,5 +22,7 @@ struct OsrmRequestResult
 };
 
 OsrmRequestResult GenerateOsrmRequestResult(Parameter parameter);
+int SetNavigationToServer(Solution solution, std::string timestamp);
+
 
 #endif

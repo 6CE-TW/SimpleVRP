@@ -4,11 +4,11 @@
 #include <vector>
 #include "solver/algorithm/initial_solution/initial_solution.h"
 #include "solver/algorithm/local_search/metaheuristic.h"
-#include "solver/algorithm/common_tools.h"
 #include "solver/algorithm/parameter/parameter.h"
-
 #include "solver/dao/solution.h"
 #include "solver/wrapper/wrapper.h"
+
+#include "solver/common_tools.h"
 
 struct Route
 {

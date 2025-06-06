@@ -2,6 +2,21 @@
 #define COMMON_TOOLS_H
 
 #include <chrono>
+#include <fstream>
+#include <sstream>
+
+#ifndef NLOHMANN_JSON_H_
+#include <nlohmann/json.hpp>
+#define NLOHMANN_JSON_H_
+#endif
+
+inline void SaveJson(std::string _save_path, nlohmann::json json)
+{
+  std::ofstream file(_save_path);
+  file.clear();
+  file << json.dump();
+  file.close();
+}
 
 inline std::int64_t now_unixtime()
 {
