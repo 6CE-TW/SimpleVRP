@@ -133,7 +133,8 @@ window.addEventListener('DOMContentLoaded', () => {
         <strong>Vehicle ${currentTab} Information</strong><br/>
         Number of Nodes: ${infoData.node_count ?? "-"}<br/>
         Route Length: ${infoData.distance / 1000 ?? "-"} KM<br/>
-        Estimated Time: ${infoData.duration ?? "-"} min
+        Estimated Time: ${infoData.duration ?? "-"} min<br/>
+        Route Cost: ${infoData.cost ?? "-"}
       `;
 
       container.appendChild(info);
@@ -179,7 +180,14 @@ window.addEventListener('DOMContentLoaded', () => {
               opacity: 1,
               fillOpacity: 0.8
             });
-            marker.bindPopup(`Name: ${feature.properties?.name}<br>Seq: ${feature.properties?.serial}`);
+            marker.bindPopup(
+              `Name: ${feature.properties?.name}<br>
+              Seq: ${feature.properties?.serial}<br>
+              Distance: ${feature.properties?.transit_distance}<br>
+              Time: ${feature.properties?.transit_time}<br>
+              Cost: ${feature.properties?.transit_cost}
+              `
+            );
             marker.bindTooltip(`No.${feature.properties?.serial}`, { direction: 'top' });
             return marker;
           }
@@ -193,6 +201,7 @@ window.addEventListener('DOMContentLoaded', () => {
         vehicleInfoMap[id] = {
           distance: infoLine.distance ?? 0,
           duration: infoLine.duration ?? 0,
+          cost: infoLine.cost ?? 0,
           node_count: infoLine.node_count ?? 0
         };
       });

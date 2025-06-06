@@ -174,17 +174,20 @@ int main()
       std::string node_color_hex = node_color.at(0) + node_color.at(1) + node_color.at(2);
       for (std::size_t j = 0; j < vehicle_task_route.tasks.size(); ++j)
       {
-        const Destination destination = vehicle_task_route.tasks.at(j).destination;
+        const Task task = vehicle_task_route.tasks.at(j);
 
         json feature;
         feature["type"] = "Feature";
         feature["properties"]["marker-color"] = "#" + node_color_hex;
         feature["properties"]["marker-size"] = "medium";
-        feature["properties"]["name"] = destination.name;
+        feature["properties"]["name"] = task.destination.name;
         feature["properties"]["serial"] = j;
-        feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
+        feature["properties"]["transit_distance"] = task.transit_distance;
+        feature["properties"]["transit_time"] = task.transit_time;
+        feature["properties"]["transit_cost"] = task.transit_cost;
+        feature["properties"]["vehicle_id"] = vehicle_task_route.vehicle.id;
         feature["geometry"]["type"] = "Point";
-        feature["geometry"]["coordinates"] = {destination.lon, destination.lat};
+        feature["geometry"]["coordinates"] = {task.destination.lon, task.destination.lat};
         features_json.push_back(feature);
       }
 
@@ -197,9 +200,10 @@ int main()
       line_feature["properties"]["stroke"] = "#" + line_color_hex;
       line_feature["properties"]["stroke-width"] = 3;
       line_feature["properties"]["stroke-opacity"] = 0.8;
-      line_feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
+      line_feature["properties"]["vehicle_id"] = vehicle_task_route.vehicle.id;
       line_feature["information"]["distance"] = vehicle_task_route.total_transit_distance();
       line_feature["information"]["duration"] = vehicle_task_route.total_transit_time();
+      line_feature["information"]["cost"] = vehicle_task_route.total_transit_cost();
       line_feature["information"]["node_count"] = vehicle_task_route.tasks.size();
       line_feature["geometry"]["type"] = "LineString";
       line_feature["geometry"] = single_navigation_json["routes"][0]["geometry"];
