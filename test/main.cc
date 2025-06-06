@@ -17,9 +17,7 @@
 #include "wrapper/wrapper.h"
 
 #include "solver/utilities.h"
-
-const bool USE_DUMMY_DISTANCE_MATRIX = false;
-const bool VERIFY_NAVIGATION_DATA = false;
+#include "solver/config.h"
 
 void SaveJson(std::string _save_path, nlohmann::json json)
 {

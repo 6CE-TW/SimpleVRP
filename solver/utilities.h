@@ -9,6 +9,9 @@
 #define NLOHMANN_JSON_H_
 #endif
 
+#ifndef UTILITIES_H_
+#define UTILITIES_H_
+
 const bool TEST_CPR_WITH_HTTPBIN = false;
 const bool TEST_CPR_WITH_OSRM = false;
 
@@ -112,3 +115,5 @@ inline int VerifyCprCondition()
 
   return 0;
 }
+
+#endif
