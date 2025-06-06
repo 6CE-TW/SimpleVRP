@@ -54,7 +54,8 @@ int main()
 
   Parameter data = ParameterWrapper::FromJson(str);
   // std::cout << DumpParameter(data) << std::endl;
-  std::vector<std::vector<double>> cost_matrix;
+  std::vector<std::vector<double>> distance_matrix;
+  std::vector<std::vector<double>> duration_matrix;
 
   if (USE_DUMMY_DISTANCE_MATRIX)
   {
@@ -64,7 +65,8 @@ int main()
     std::vector<Cartesian> node_map = CreateNodeMap(n, sand_box);
     PrintNodeMap(node_map);
 
-    cost_matrix = CreateCostMatrix(n, node_map);
+    distance_matrix = CreateCostMatrix(n, node_map);
+    duration_matrix = CreateCostMatrix(n, node_map);
     // clang-format off
     // cost_matrix =
     // {
@@ -94,7 +96,6 @@ int main()
 
     json matrix_response_json = json::parse(matrix_response.text);
     // Export Distance Matrix
-    std::vector<std::vector<double>> distance_matrix;
     for (const auto &row : matrix_response_json["distances"])
     {
       std::vector<double> distance_row;
@@ -105,7 +106,6 @@ int main()
       distance_matrix.push_back(distance_row);
     }
 
-    std::vector<std::vector<double>> duration_matrix;
     for (const auto &row : matrix_response_json["durations"])
     {
       std::vector<double> duration_row;
@@ -115,23 +115,10 @@ int main()
       }
       duration_matrix.push_back(duration_row);
     }
-
-    std::pair<double, double> cost_ratio = data.cost_ratio;
-    for (std::size_t i = 0; i < data.destinations.size(); ++i)
-    {
-      std::vector<double> cost_row;
-      for (std::size_t j = 0; j < data.destinations.size(); ++j)
-      {
-        double weighted_cost = distance_matrix[i][j] * cost_ratio.first + duration_matrix[i][j] * cost_ratio.second;
-        cost_row.push_back(weighted_cost);
-      }
-      cost_matrix.push_back(cost_row);
-    }
   }
 
-  std::cout << "Number of Node: " << cost_matrix.size() << "\n";
-
-  SimpleVRPSolver simple_vrp_solver(data, cost_matrix);
+  std::cout << "Number of Node: " << data.destinations.size() << "\n";
+  SimpleVRPSolver simple_vrp_solver(data, distance_matrix, duration_matrix);
 
   simple_vrp_solver.Solve();
   simple_vrp_solver.PrintSolution();

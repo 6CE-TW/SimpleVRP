@@ -20,6 +20,8 @@ struct Route
 class SimpleVRPSolver
 {
 private:
+  std::vector<std::vector<double>> _distance_matrix;
+  std::vector<std::vector<double>> _duration_matrix;
   std::vector<std::vector<double>> _cost_matrix;
   std::size_t _num_of_vehicles;
   std::size_t _num_of_nodes;
@@ -57,9 +59,28 @@ private:
   void PerformLocalSearch();
 
 public:
-  SimpleVRPSolver(Parameter parameter, std::vector<std::vector<double>> cost_matrix)
+  SimpleVRPSolver(
+      Parameter parameter,
+      std::vector<std::vector<double>> distance_matrix,
+      std::vector<std::vector<double>> duration_matrix)
   {
     this->_parameter = parameter;
+    this->_distance_matrix = distance_matrix;
+    this->_duration_matrix = duration_matrix;
+
+    std::vector<std::vector<double>> cost_matrix;
+    std::pair<double, double> cost_ratio = parameter.cost_ratio;
+    for (std::size_t i = 0; i < parameter.destinations.size(); ++i)
+    {
+      std::vector<double> cost_row;
+      for (std::size_t j = 0; j < parameter.destinations.size(); ++j)
+      {
+        double weighted_cost = distance_matrix[i][j] * cost_ratio.first + duration_matrix[i][j] * cost_ratio.second;
+        cost_row.push_back(weighted_cost);
+      }
+      cost_matrix.push_back(cost_row);
+    }
+
     this->_cost_matrix = cost_matrix;
     this->_num_of_vehicles = parameter.vehicles.size();
     this->_num_of_nodes = parameter.destinations.size();
