@@ -18,8 +18,7 @@
 
 #include "solver/utilities.h"
 
-const bool TEST_FROM_DUMMY_DATA = false;
-const bool PRINT_DISTANCE_MATRIX = false;
+const bool USE_DUMMY_DISTANCE_MATRIX = false;
 const bool VERIFY_NAVIGATION_DATA = false;
 
 void SaveJson(std::string _save_path, nlohmann::json json)
@@ -33,7 +32,7 @@ void SaveJson(std::string _save_path, nlohmann::json json)
 int main()
 {
   int cpr_condition_code = VerifyCprCondition();
-  if(cpr_condition_code == 1)
+  if (cpr_condition_code == 1)
   {
     return 1;
   }
@@ -57,34 +56,12 @@ int main()
 
   Parameter data = ParameterWrapper::FromJson(str);
   // std::cout << DumpParameter(data) << std::endl;
-
-  json j = ParameterToJsonList(data);
-  // std::cout<<j.dump()<<"\n";
-
-  cpr::Response r = cpr::Post(
-      cpr::Url{"http://35.194.198.57:8000/cost-matrix"},
-      cpr::Header{{"Content-Type", "application/json"}},
-      cpr::Body{j.dump()});
-
-  if (PRINT_DISTANCE_MATRIX)
-  {
-    if (r.status_code == 200)
-    {
-      auto res = json::parse(r.text);
-      std::cout << res.dump(2) << std::endl;
-    }
-    else
-    {
-      std::cerr << "Request failed: " << r.status_code << std::endl;
-    }
-  }
-
   std::vector<std::vector<double>> cost_matrix;
-  std::size_t num_of_vehicle = data.vehicles.size();
-  if (TEST_FROM_DUMMY_DATA)
+
+  if (USE_DUMMY_DISTANCE_MATRIX)
   {
     srand(time(NULL));
-    int n = 100;
+    int n = data.destinations.size();
     Cartesian sand_box = {10000, 10000};
     std::vector<Cartesian> node_map = CreateNodeMap(n, sand_box);
     PrintNodeMap(node_map);
@@ -109,10 +86,18 @@ int main()
   }
   else
   {
-    auto res = json::parse(r.text);
+    json json_search_matrix_input = ParameterToJsonList(data);
+    // std::cout<<j.dump()<<"\n";
+
+    cpr::Response matrix_response = cpr::Post(
+        cpr::Url{"http://35.194.198.57:8000/cost-matrix"},
+        cpr::Header{{"Content-Type", "application/json"}},
+        cpr::Body{json_search_matrix_input.dump()});
+
+    json matrix_response_json = json::parse(matrix_response.text);
     // Export Distance Matrix
     std::vector<std::vector<double>> distance_matrix;
-    for (const auto &row : res["distances"])
+    for (const auto &row : matrix_response_json["distances"])
     {
       std::vector<double> distance_row;
       for (const auto &value : row)
@@ -123,7 +108,7 @@ int main()
     }
 
     std::vector<std::vector<double>> duration_matrix;
-    for (const auto &row : res["durations"])
+    for (const auto &row : matrix_response_json["durations"])
     {
       std::vector<double> duration_row;
       for (const auto &value : row)
@@ -131,32 +116,6 @@ int main()
         duration_row.push_back(value.get<double>());
       }
       duration_matrix.push_back(duration_row);
-    }
-
-    if (PRINT_DISTANCE_MATRIX)
-    {
-      // Print Result
-      std::cout << "Distance Matrix: " << std::endl;
-      for (size_t i = 0; i < distance_matrix.size(); ++i)
-      {
-        for (size_t j = 0; j < distance_matrix[i].size(); ++j)
-        {
-          std::cout << distance_matrix[i][j] << " ";
-        }
-        std::cout << std::endl;
-      }
-      std::cout << std::endl;
-
-      std::cout << "Duration Matrix: " << std::endl;
-      for (size_t i = 0; i < duration_matrix.size(); ++i)
-      {
-        for (size_t j = 0; j < duration_matrix[i].size(); ++j)
-        {
-          std::cout << duration_matrix[i][j] << " ";
-        }
-        std::cout << std::endl;
-      }
-      std::cout << std::endl;
     }
 
     std::pair<double, double> cost_ratio = data.cost_ratio;
@@ -174,12 +133,7 @@ int main()
 
   std::cout << "Number of Node: " << cost_matrix.size() << "\n";
 
-  SimpleVRPSolver simple_vrp_solver(cost_matrix, num_of_vehicle);
-
-  if (TEST_FROM_DUMMY_DATA == false)
-  {
-    simple_vrp_solver.SetParameter(data);
-  }
+  SimpleVRPSolver simple_vrp_solver(data, cost_matrix);
 
   simple_vrp_solver.Solve();
   simple_vrp_solver.PrintSolution();
@@ -191,86 +145,89 @@ int main()
   SaveJson("../test/results/test_result_" + timestamp + ".json", solution.ToJson());
   SaveJson("../test/results/test_result_" + timestamp + "_geojson.json", solution.ToGeoJson());
 
-  json multi_routes_json = solution.ToGetRouteJson();
-
-  // send POST request to server
-  cpr::Response res_route = cpr::Post(
-      cpr::Url{"http://35.194.198.57:8000/get-multiple-routes"},
-      cpr::Header{{"Content-Type", "application/json"}},
-      cpr::Body{multi_routes_json.dump()});
-
-  // Print result
-  if (VERIFY_NAVIGATION_DATA)
+  if (USE_DUMMY_DISTANCE_MATRIX == false)
   {
-    if (res_route.status_code == 200)
+    json multi_routes_json = solution.ToGetRouteJson();
+
+    // send POST request to server
+    cpr::Response res_route = cpr::Post(
+        cpr::Url{"http://35.194.198.57:8000/get-multiple-routes"},
+        cpr::Header{{"Content-Type", "application/json"}},
+        cpr::Body{multi_routes_json.dump()});
+
+    // Print result
+    if (VERIFY_NAVIGATION_DATA)
     {
-      std::cout << "Receive route data successfully:" << std::endl;
-      std::cout << res_route.text << std::endl;
+      if (res_route.status_code == 200)
+      {
+        std::cout << "Receive route data successfully:" << std::endl;
+        std::cout << res_route.text << std::endl;
+      }
+      else
+      {
+        std::cerr << "Search failed, HTTP code: " << res_route.status_code << std::endl;
+        std::cerr << res_route.text << std::endl;
+        return 1;
+      }
     }
-    else
+
+    json navigation_json = json::parse(res_route.text);
+
+    std::vector<std::vector<std::string>> node_colors = solution.GenerateVehicleColor(solution.vehicle_task_routes.size(), false);
+    std::vector<std::vector<std::string>> line_colors = solution.GenerateVehicleColor(solution.vehicle_task_routes.size(), true);
+    json navigation_geo_json;
+    navigation_geo_json["type"] = "FeatureCollection";
+
+    json features_json = json::array();
+    for (std::size_t i = 0; i < navigation_json.size(); ++i)
     {
-      std::cerr << "Search failed, HTTP code: " << res_route.status_code << std::endl;
-      std::cerr << res_route.text << std::endl;
-      return 1;
+      const VehicleTaskRoute vehicle_task_route = solution.vehicle_task_routes.at(i);
+
+      std::vector<std::string> line_color = line_colors.at(i);
+      std::string line_color_hex = line_color.at(0) + line_color.at(1) + line_color.at(2);
+      std::vector<std::string> node_color = node_colors.at(i);
+      std::string node_color_hex = node_color.at(0) + node_color.at(1) + node_color.at(2);
+      for (std::size_t j = 0; j < vehicle_task_route.tasks.size(); ++j)
+      {
+        const Destination destination = vehicle_task_route.tasks.at(j).destination;
+
+        json feature;
+        feature["type"] = "Feature";
+        feature["properties"]["marker-color"] = "#" + node_color_hex;
+        feature["properties"]["marker-size"] = "medium";
+        feature["properties"]["name"] = destination.name;
+        feature["properties"]["serial"] = j;
+        feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
+        feature["geometry"]["type"] = "Point";
+        feature["geometry"]["coordinates"] = {destination.lon, destination.lat};
+        features_json.push_back(feature);
+      }
+
+      json single_navigation_json = navigation_json.at(i);
+
+      json line_feature;
+      line_feature["type"] = "Feature";
+      line_feature["properties"]["strokeColor"] = "#" + line_color_hex;
+      line_feature["style"]["fill"] = "#" + line_color_hex;
+      line_feature["properties"]["stroke"] = "#" + line_color_hex;
+      line_feature["properties"]["stroke-width"] = 3;
+      line_feature["properties"]["stroke-opacity"] = 0.8;
+      line_feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
+      line_feature["information"]["distance"] = vehicle_task_route.total_transit_distance();
+      line_feature["information"]["duration"] = vehicle_task_route.total_transit_time();
+      line_feature["information"]["node_count"] = vehicle_task_route.tasks.size();
+      line_feature["geometry"]["type"] = "LineString";
+      line_feature["geometry"] = single_navigation_json["routes"][0]["geometry"];
+      features_json.push_back(line_feature);
     }
+    navigation_geo_json["features"] = features_json;
+    SaveJson("../test/results/test_result_" + timestamp + "_navigation.json", navigation_geo_json);
+
+    cpr::Response local_res = cpr::Post(
+        cpr::Url{"http://localhost:8080/set-navigation"},
+        cpr::Header{{"Content-Type", "application/json"}},
+        cpr::Body{navigation_geo_json.dump()});
   }
-
-  json navigation_json = json::parse(res_route.text);
-
-  std::vector<std::vector<std::string>> node_colors = solution.GenerateVehicleColor(solution.vehicle_task_routes.size(), false);
-  std::vector<std::vector<std::string>> line_colors = solution.GenerateVehicleColor(solution.vehicle_task_routes.size(), true);
-  json navigation_geo_json;
-  navigation_geo_json["type"] = "FeatureCollection";
-
-  json features_json = json::array();
-  for (std::size_t i = 0; i < navigation_json.size(); ++i)
-  {
-    const VehicleTaskRoute vehicle_task_route = solution.vehicle_task_routes.at(i);
-
-    std::vector<std::string> line_color = line_colors.at(i);
-    std::string line_color_hex = line_color.at(0) + line_color.at(1) + line_color.at(2);
-    std::vector<std::string> node_color = node_colors.at(i);
-    std::string node_color_hex = node_color.at(0) + node_color.at(1) + node_color.at(2);
-    for (std::size_t j = 0; j < vehicle_task_route.tasks.size(); ++j)
-    {
-      const Destination destination = vehicle_task_route.tasks.at(j).destination;
-
-      json feature;
-      feature["type"] = "Feature";
-      feature["properties"]["marker-color"] = "#" + node_color_hex;
-      feature["properties"]["marker-size"] = "medium";
-      feature["properties"]["name"] = destination.name;
-      feature["properties"]["serial"] = j;
-      feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
-      feature["geometry"]["type"] = "Point";
-      feature["geometry"]["coordinates"] = {destination.lon, destination.lat};
-      features_json.push_back(feature);
-    }
-
-    json single_navigation_json = navigation_json.at(i);
-
-    json line_feature;
-    line_feature["type"] = "Feature";
-    line_feature["properties"]["strokeColor"] = "#" + line_color_hex;
-    line_feature["style"]["fill"] = "#" + line_color_hex;
-    line_feature["properties"]["stroke"] = "#" + line_color_hex;
-    line_feature["properties"]["stroke-width"] = 3;
-    line_feature["properties"]["stroke-opacity"] = 0.8;
-    line_feature["properties"]["vehicle_id"] = data.vehicles.at(i).id;
-    line_feature["information"]["distance"] = vehicle_task_route.total_transit_distance();
-    line_feature["information"]["duration"] = vehicle_task_route.total_transit_time();
-    line_feature["information"]["node_count"] = vehicle_task_route.tasks.size();
-    line_feature["geometry"]["type"] = "LineString";
-    line_feature["geometry"] = single_navigation_json["routes"][0]["geometry"];
-    features_json.push_back(line_feature);
-  }
-  navigation_geo_json["features"] = features_json;
-  SaveJson("../test/results/test_result_" + timestamp + "_navigation.json", navigation_geo_json);
-
-  cpr::Response local_res = cpr::Post(
-      cpr::Url{"http://localhost:8080/set-navigation"},
-      cpr::Header{{"Content-Type", "application/json"}},
-      cpr::Body{navigation_geo_json.dump()});
 
   return 0;
 }
