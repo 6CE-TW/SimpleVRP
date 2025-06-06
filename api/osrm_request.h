@@ -15,13 +15,13 @@
 #include "solver/dao/solution.h"
 #include "solver/wrapper/wrapper.h"
 
-struct OsrmRequestResult
+struct OsrmMatrixResult
 {
   std::vector<std::vector<double>> distance_matrix;
   std::vector<std::vector<double>> duration_matrix;
 };
 
-OsrmRequestResult GenerateOsrmRequestResult(Parameter parameter);
+OsrmMatrixResult GenerateOsrmMatrixResult(Parameter parameter);
 int SetNavigationToServer(Solution solution, std::string timestamp);
 
 

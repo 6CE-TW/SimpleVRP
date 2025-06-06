@@ -70,9 +70,9 @@ int main()
   }
   else
   {
-    OsrmRequestResult osrm_request_result = GenerateOsrmRequestResult(data);
-    distance_matrix = osrm_request_result.distance_matrix;
-    duration_matrix = osrm_request_result.duration_matrix;
+    OsrmMatrixResult osrm_matrix_result = GenerateOsrmMatrixResult(data);
+    distance_matrix = osrm_matrix_result.distance_matrix;
+    duration_matrix = osrm_matrix_result.duration_matrix;
   }
 
   std::cout << "Number of Node: " << data.destinations.size() << "\n";

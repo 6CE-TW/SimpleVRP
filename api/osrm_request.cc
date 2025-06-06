@@ -5,9 +5,9 @@
 
 #include "solver/common_tools.h"
 
-OsrmRequestResult GenerateOsrmRequestResult(Parameter parameter)
+OsrmMatrixResult GenerateOsrmMatrixResult(Parameter parameter)
 {
-  OsrmRequestResult osrm_request_result;
+  OsrmMatrixResult osrm_matrix_result;
 
   json json_search_matrix_input = ParameterToJsonList(parameter);
   // std::cout<<j.dump()<<"\n";
@@ -26,7 +26,7 @@ OsrmRequestResult GenerateOsrmRequestResult(Parameter parameter)
     {
       distance_row.push_back(value.get<double>());
     }
-    osrm_request_result.distance_matrix.push_back(distance_row);
+    osrm_matrix_result.distance_matrix.push_back(distance_row);
   }
 
   for (const auto &row : matrix_response_json["durations"])
@@ -36,10 +36,10 @@ OsrmRequestResult GenerateOsrmRequestResult(Parameter parameter)
     {
       duration_row.push_back(value.get<double>());
     }
-    osrm_request_result.duration_matrix.push_back(duration_row);
+    osrm_matrix_result.duration_matrix.push_back(duration_row);
   }
 
-  return osrm_request_result;
+  return osrm_matrix_result;
 }
 
 int SetNavigationToServer(Solution solution, std::string timestamp)
