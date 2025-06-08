@@ -6,3 +6,6 @@ output
 # for json results
 test/results
 server/navigation_data.json
+
+# for server cache
+server/__pycache__
