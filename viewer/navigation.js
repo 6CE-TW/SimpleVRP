@@ -133,7 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <strong>Vehicle ${currentTab} Information</strong><br/>
         Number of Nodes: ${infoData.node_count ?? "-"}<br/>
         Route Length: ${infoData.distance / 1000 ?? "-"} KM<br/>
-        Estimated Time: ${infoData.duration ?? "-"} min<br/>
+        Estimated Time: ${infoData.duration ?? "-"}<br/>
         Route Cost: ${infoData.cost ?? "-"}
       `;
 
