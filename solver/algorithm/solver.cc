@@ -107,7 +107,8 @@ void SimpleVRPSolver::EncodeRouteToNodeRecord()
   {
     std::size_t route_length = route_records.at(i).size();
 
-    std::vector<std::size_t> single_vehicle_node_records = {0};
+    const Route first_route = route_records.at(i).at(0);
+    std::vector<std::size_t> single_vehicle_node_records = {first_route.prev};
     for (std::size_t j = 0; j < route_length; ++j)
     {
       const Route route = route_records.at(i).at(j);
