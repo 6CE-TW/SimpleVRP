@@ -30,13 +30,14 @@ add_subdirectory(dependencies/json)
 # ========================
 set(SOURCE_FILES
     test/main.cc
+    api/osrm_request.cc
     data/data.cc
-    algorithm/solver.cc
-    algorithm/initial_solution/initial_solution.cc
-    algorithm/local_search/tools.cc
-    algorithm/local_search/local_search.cc
-    algorithm/parameter/parameter.cc
-    wrapper/wrapper.cc
+    solver/algorithm/solver.cc
+    solver/algorithm/initial_solution/initial_solution.cc
+    solver/algorithm/local_search/tools.cc
+    solver/algorithm/local_search/local_search.cc
+    solver/algorithm/parameter/parameter.cc
+    solver/wrapper/wrapper.cc
 )
 
 # ========================
@@ -78,12 +79,13 @@ target_include_directories(main PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/cpr/include
     ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/cpr/build/_deps/curl-src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/cpr/build/cpr_generated_includes
+    ${CMAKE_CURRENT_SOURCE_DIR}/api
     ${CMAKE_CURRENT_SOURCE_DIR}/data
-    ${CMAKE_CURRENT_SOURCE_DIR}/algorithm
-    ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/parameter
-    ${CMAKE_CURRENT_SOURCE_DIR}/algorithm/local_search
-    ${CMAKE_CURRENT_SOURCE_DIR}/dao
-    ${CMAKE_CURRENT_SOURCE_DIR}/wrapper
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver/algorithm
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver/algorithm/parameter
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver/algorithm/local_search
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver/dao
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver/wrapper
     ${CMAKE_CURRENT_SOURCE_DIR}/test
 )
 

@@ -1,5 +1,5 @@
 #include <vector>
-#include "algorithm/local_search/local_search.h"
+#include "solver/algorithm/local_search/local_search.h"
 
 void SwapSubsegments(
     std::vector<std::size_t> &a, size_t a_start, size_t a_end,

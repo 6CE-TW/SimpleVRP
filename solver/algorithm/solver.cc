@@ -1,11 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include <future>
-#include "algorithm/solver.h"
-#include "algorithm/initial_solution/initial_solution.h"
-#include "algorithm/local_search/local_search.h"
-#include "algorithm/parameter/parameter.h"
-#include "algorithm/config.h"
+#include "solver/algorithm/solver.h"
+#include "solver/algorithm/initial_solution/initial_solution.h"
+#include "solver/algorithm/local_search/local_search.h"
+#include "solver/algorithm/parameter/parameter.h"
+#include "solver/algorithm/config.h"
 
 // TODO: use glog to print log
 // #include <glog/logging.h>
@@ -73,7 +73,9 @@ Solution SimpleVRPSolver::ExtractSolution()
 
   for (std::size_t i = 0; i < this->_num_of_vehicles; ++i)
   {
-    VehicleTaskRoute vehicle_task_route(i);
+    Vehicle vehicle = this->vehicle(i);
+    VehicleTaskRoute vehicle_task_route(vehicle);
+
     std::size_t route_length = node_records.at(i).size();
 
     for (std::size_t j = 0; j < route_length; ++j)
@@ -84,7 +86,9 @@ Solution SimpleVRPSolver::ExtractSolution()
       if(j > 0)
       {
         std::size_t prev_node = vehicle_task_route.tasks.back().index;
-        task.transit_distance = this->_cost_matrix[prev_node][node];
+        task.transit_distance = this->_distance_matrix[prev_node][node];
+        task.transit_time = this->_duration_matrix[prev_node][node];
+        task.transit_cost = this->_cost_matrix[prev_node][node];
       }
 
       vehicle_task_route.tasks.push_back(task);
@@ -103,7 +107,8 @@ void SimpleVRPSolver::EncodeRouteToNodeRecord()
   {
     std::size_t route_length = route_records.at(i).size();
 
-    std::vector<std::size_t> single_vehicle_node_records = {0};
+    const Route first_route = route_records.at(i).at(0);
+    std::vector<std::size_t> single_vehicle_node_records = {first_route.prev};
     for (std::size_t j = 0; j < route_length; ++j)
     {
       const Route route = route_records.at(i).at(j);

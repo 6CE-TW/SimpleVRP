@@ -1,4 +1,4 @@
-#include "wrapper/wrapper.h"
+#include "solver/wrapper/wrapper.h"
 
 std::string DumpParameter(Parameter parameter)
 {
@@ -21,6 +21,24 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
 {
   auto parameter = Parameter();
 
+  // #region common
+  if (json_obj.contains("common"))
+  {
+    auto json_common = json_obj.at("common");
+
+    if (json_common.contains("cost_ratio"))
+    {
+      const auto json_cost_ratio = json_common.at("cost_ratio");
+
+      const auto dist_ratio = json_cost_ratio.at(0).get<std::int64_t>();
+      const auto time_ratio = json_cost_ratio.at(1).get<std::int64_t>();
+
+      parameter.cost_ratio.first = dist_ratio;
+      parameter.cost_ratio.second = time_ratio;
+    }
+  }
+  // #endregion common
+
   // #region destinations
   if (json_obj.contains("destinations"))
   {
@@ -40,6 +58,32 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
     }
   }
   // #endregion destinations
+
+  // #region vehicles
+  if (json_obj.contains("vehicles"))
+  {
+    auto json_vehicles = json_obj.at("vehicles");
+
+    for (std::size_t i = 0; i < json_vehicles.size(); ++i)
+    {
+      auto elem = json_vehicles.at(i);
+
+      auto vehicle = Vehicle();
+      vehicle.id = elem.value("id", "");
+
+      if (elem.contains("location"))
+      {
+        auto json_location = elem.at("location");
+
+        vehicle.location_start = json_location.at(0).get<std::string>();
+        vehicle.location_end = json_location.at(1).get<std::string>();
+      }
+
+      // append into struct
+      parameter.vehicles.push_back(vehicle);
+    }
+  }
+  // #endregion vehicles
 
   return parameter;
 };

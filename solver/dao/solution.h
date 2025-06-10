@@ -2,7 +2,8 @@
 #include <vector>
 #include <sstream>
 
-#include "dao/destination.h"
+#include "solver/dao/destination.h"
+#include "solver/dao/vehicle.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>
@@ -23,6 +24,7 @@ public:
 
   double transit_distance = 0;
   double transit_time = 0;
+  double transit_cost = 0;
 
   Task() {};
   Task(std::int32_t sequence, std::size_t index, Destination destination)
@@ -40,6 +42,7 @@ public:
     data["name"] = destination.name;
     data["transit_distance"] = transit_distance;
     data["transit_time"] = transit_time;
+    data["transit_cost"] = transit_cost;
     data["lat"] = destination.lat;
     data["lon"] = destination.lon;
 
@@ -51,11 +54,11 @@ class VehicleTaskRoute
 {
 public:
   // Vehicle vehicle;
-  std::size_t vehicle;
+  Vehicle vehicle;
   std::vector<Task> tasks;
 
   VehicleTaskRoute() {};
-  VehicleTaskRoute(std::size_t vehicle)
+  VehicleTaskRoute(Vehicle vehicle)
   {
     this->vehicle = vehicle;
   };
@@ -82,11 +85,22 @@ public:
     return sum;
   };
 
+  std::int64_t total_transit_cost() const
+  {
+    std::int64_t sum = 0;
+    for (std::size_t i = 0; i < this->tasks.size(); ++i)
+    {
+      sum += this->tasks[i].transit_cost;
+    }
+
+    return sum;
+  };
+
   json ToJson()
   {
     json data;
 
-    data["vehicle_id"] = this->vehicle;
+    data["vehicle_id"] = this->vehicle.id;
 
     std::vector<json> _tasks(this->tasks.size());
     std::transform(this->tasks.begin(), this->tasks.end(), _tasks.begin(), [](Task t)
@@ -95,6 +109,7 @@ public:
 
     data["total_transit_distance"] = this->total_transit_distance();
     data["total_transit_time"] = this->total_transit_time();
+    data["total_transit_cost"] = this->total_transit_cost();
 
     return data;
   };

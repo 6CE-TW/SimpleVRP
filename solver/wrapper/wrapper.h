@@ -1,7 +1,8 @@
 #include <string>
 #include <vector>
 
-#include "dao/destination.h"
+#include "solver/dao/destination.h"
+#include "solver/dao/vehicle.h"
 
 #ifndef NLOHMANN_JSON_H_
 #include <nlohmann/json.hpp>
@@ -15,7 +16,9 @@ using json = nlohmann::json;
 
 struct Parameter
 {
+  std::pair<double, double> cost_ratio = {1, 1};
   std::vector<Destination> destinations;
+  std::vector<Vehicle> vehicles;
 };
 
 std::string DumpParameter(Parameter parameter);

@@ -2,7 +2,7 @@
 #define PARAMETER_H
 
 #include <unordered_map>
-#include "algorithm/local_search/local_search.h"
+#include "solver/algorithm/local_search/local_search.h"
 
 class LocalSearchParameter
 {

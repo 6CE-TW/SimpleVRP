@@ -1,5 +1,5 @@
-#include "algorithm/local_search/local_search.h"
-#include "algorithm/config.h"
+#include "solver/algorithm/local_search/local_search.h"
+#include "solver/algorithm/config.h"
 
 std::vector<std::unique_ptr<LocalSearch>> LocalSearchGenerator::GenerateLocalSearchList()
 {
