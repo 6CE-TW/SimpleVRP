@@ -21,6 +21,24 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
 {
   auto parameter = Parameter();
 
+  // #region common
+  if (json_obj.contains("common"))
+  {
+    auto json_common = json_obj.at("common");
+
+    if (json_common.contains("cost_ratio"))
+    {
+      const auto json_cost_ratio = json_common.at("cost_ratio");
+
+      const auto dist_ratio = json_cost_ratio.at(0).get<std::int64_t>();
+      const auto time_ratio = json_cost_ratio.at(1).get<std::int64_t>();
+
+      parameter.cost_ratio.first = dist_ratio;
+      parameter.cost_ratio.second = time_ratio;
+    }
+  }
+  // #endregion common
+
   // #region destinations
   if (json_obj.contains("destinations"))
   {

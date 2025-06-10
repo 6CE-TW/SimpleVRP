@@ -1,4 +1,7 @@
 {
+  "common": {
+    "cost_ratio": [1, 10]
+  },
   "destinations": [
     {
       "name": "臺灣新北地方法院",
