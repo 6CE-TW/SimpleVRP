@@ -6,23 +6,10 @@
 #include "solver/algorithm/local_search/metaheuristic.h"
 #include "solver/algorithm/parameter/parameter.h"
 #include "solver/dao/solution.h"
+#include "solver/dao/route.h"
 #include "solver/wrapper/wrapper.h"
 
 #include "solver/common_tools.h"
-
-struct Route
-{
-  std::size_t prev;
-  std::size_t next;
-  std::size_t vehicle;
-  double cost;
-};
-
-struct PathRoutes
-{
-  std::vector<Route> routes;
-  std::size_t vehicle;
-};
 
 class SimpleVRPSolver
 {
