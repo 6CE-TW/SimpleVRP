@@ -15,6 +15,13 @@ struct Route
   std::size_t prev;
   std::size_t next;
   std::size_t vehicle;
+  double cost;
+};
+
+struct PathRoutes
+{
+  std::vector<Route> routes;
+  std::size_t vehicle;
 };
 
 class SimpleVRPSolver
@@ -53,6 +60,7 @@ private:
 
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
+  void InitialSolutionGlobalMinimal();
   void GetInitialSolution();
 
   void EncodeRouteToNodeRecord();
