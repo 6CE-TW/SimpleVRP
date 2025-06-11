@@ -2,6 +2,7 @@
 #define INITIAL_SOLUTION_H
 
 #include <string>
+#include "solver/dao/route.h"
 
 enum InitialSolutionStrategy
 {
@@ -11,5 +12,11 @@ enum InitialSolutionStrategy
 };
 
 std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_solution_strategy);
+
+PathRoutes MergePathRoutes(
+    const PathRoutes &first,
+    const PathRoutes &second,
+    const Route &connecting_edge,
+    std::size_t assigned_vehicle);
 
 #endif // INITIAL_SOLUTION_H
