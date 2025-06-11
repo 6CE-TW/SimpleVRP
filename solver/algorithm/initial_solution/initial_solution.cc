@@ -121,6 +121,22 @@ void SimpleVRPSolver::InitialSolutionCheapestNeighborMultipleVehicle()
   }
 }
 
+PathRoutes MergePathRoutes(
+    const PathRoutes &first,
+    const PathRoutes &second,
+    const Route &connecting_edge,
+    std::size_t assigned_vehicle)
+{
+  std::vector<Route> merged_routes;
+  merged_routes.reserve(first.routes.size() + 1 + second.routes.size());
+
+  merged_routes.insert(merged_routes.end(), first.routes.begin(), first.routes.end());
+  merged_routes.push_back(connecting_edge);
+  merged_routes.insert(merged_routes.end(), second.routes.begin(), second.routes.end());
+
+  return PathRoutes{merged_routes, assigned_vehicle};
+}
+
 void SimpleVRPSolver::InitialSolutionGlobalMinimal()
 {
   std::set<std::size_t> traversed_nodes;
@@ -273,14 +289,11 @@ void SimpleVRPSolver::InitialSolutionGlobalMinimal()
             continue;
           }
 
-          std::vector<Route> complete_routes = path_units[prev_route_index].path_route.routes;
-          complete_routes.push_back(e);
-          for (const auto &r : path_units[next_route_index].path_route.routes)
-          {
-            complete_routes.push_back(r);
-          }
+          PathRoutes finished_route = MergePathRoutes(path_units[prev_route_index].path_route,
+                                                      path_units[next_route_index].path_route,
+                                                      e,
+                                                      path_units[prev_route_index].path_route.vehicle);
 
-          PathRoutes finished_route{complete_routes, path_units[prev_route_index].path_route.vehicle};
           complete_path_routes.push_back(finished_route);
           num_complete_path_routes += 1;
 
@@ -302,15 +315,12 @@ void SimpleVRPSolver::InitialSolutionGlobalMinimal()
       {
         // connect two paths that have not yet belonged to any vehicle
 
-        std::vector<Route> connected_routes = path_units[prev_route_index].path_route.routes;
-        connected_routes.push_back(e);
-        for (const auto &r : path_units[next_route_index].path_route.routes)
-        {
-          connected_routes.push_back(r);
-        }
+        PathRoutes connected_path = MergePathRoutes(path_units[prev_route_index].path_route,
+                                                    path_units[next_route_index].path_route,
+                                                    e,
+                                                    this->_num_of_vehicles);
 
-        PathRoutes connected_path{connected_routes, this->_num_of_vehicles};
-        PathUnit path_unit_middle = {{connected_routes.front().prev, connected_routes.back().next}, connected_path};
+        PathUnit path_unit_middle = {{connected_path.routes.front().prev, connected_path.routes.back().next}, connected_path};
         path_units.push_back(path_unit_middle);
 
         path_units.erase(path_units.begin() + std::max(prev_route_index, next_route_index));
@@ -324,15 +334,12 @@ void SimpleVRPSolver::InitialSolutionGlobalMinimal()
       {
         // connect one path that has not yet belonged to any vehicle to a start path
 
-        std::vector<Route> connected_routes = path_units[prev_route_index].path_route.routes;
-        connected_routes.push_back(e);
-        for (const auto &r : path_units[next_route_index].path_route.routes)
-        {
-          connected_routes.push_back(r);
-        }
+        PathRoutes connected_path = MergePathRoutes(path_units[prev_route_index].path_route,
+                                                    path_units[next_route_index].path_route,
+                                                    e,
+                                                    path_units[prev_route_index].path_route.vehicle);
 
-        PathRoutes connected_path{connected_routes, path_units[prev_route_index].path_route.vehicle};
-        PathUnit path_unit_middle = {{connected_routes.front().prev, connected_routes.back().next}, connected_path};
+        PathUnit path_unit_middle = {{connected_path.routes.front().prev, connected_path.routes.back().next}, connected_path};
         path_units.push_back(path_unit_middle);
 
         path_units.erase(path_units.begin() + std::max(prev_route_index, next_route_index));
@@ -346,15 +353,12 @@ void SimpleVRPSolver::InitialSolutionGlobalMinimal()
       {
         // connect one path that has not yet belonged to any vehicle to an end path
 
-        std::vector<Route> connected_routes = path_units[prev_route_index].path_route.routes;
-        connected_routes.push_back(e);
-        for (const auto &r : path_units[next_route_index].path_route.routes)
-        {
-          connected_routes.push_back(r);
-        }
+        PathRoutes connected_path = MergePathRoutes(path_units[prev_route_index].path_route,
+                                                    path_units[next_route_index].path_route,
+                                                    e,
+                                                    path_units[next_route_index].path_route.vehicle);
 
-        PathRoutes connected_path{connected_routes, path_units[next_route_index].path_route.vehicle};
-        PathUnit path_unit_middle = {{connected_routes.front().prev, connected_routes.back().next}, connected_path};
+        PathUnit path_unit_middle = {{connected_path.routes.front().prev, connected_path.routes.back().next}, connected_path};
         path_units.push_back(path_unit_middle);
 
         path_units.erase(path_units.begin() + std::max(prev_route_index, next_route_index));
