@@ -129,8 +129,6 @@ void SimpleVRPSolver::InitialSolutionCheapestNeighborMultipleVehicle()
 
 void SimpleVRPSolver::InitialSolutionGlobalMinimal()
 {
-  std::set<std::size_t> traversed_nodes;
-
   // Establish all edges and sort them
   std::vector<Route> edges;
   for (std::size_t i = 0; i < this->_num_of_nodes; ++i)
