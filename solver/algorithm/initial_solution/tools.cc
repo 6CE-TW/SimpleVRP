@@ -1,5 +1,5 @@
 #include <vector>
-#include "solver/algorithm/solver.h"
+#include "solver/algorithm/initial_solution/initial_solution.h"
 
 PathRoutes MergePathRoutes(
     const PathRoutes &first,
