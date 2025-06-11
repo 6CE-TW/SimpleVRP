@@ -13,6 +13,10 @@ std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_
   {
     return "CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE";
   }
+  if (initial_solution_strategy == InitialSolutionStrategy::GLOBAL_MINIMAL)
+  {
+    return "GLOBAL_MINIMAL";
+  }
   return "";
 }
 
