@@ -34,6 +34,8 @@ void SimpleVRPSolver::GetInitialSolution()
   {
     this->InitialSolutionGlobalMinimal();
   }
+
+  this->_initial_cost = this->_cost;
 }
 
 void SimpleVRPSolver::InitialSolutionCheapestNeighbor()

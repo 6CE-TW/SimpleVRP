@@ -23,6 +23,7 @@ private:
   std::size_t _num_of_middle_nodes;
   std::vector<std::size_t> _start_node_indices;
   std::vector<std::size_t> _end_node_indices;
+  double _initial_cost;
   double _cost;
   InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
   LocalSearchParameter local_search_parameter;
