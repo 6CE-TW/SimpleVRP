@@ -36,6 +36,17 @@ Parameter ParameterWrapper::FromJson(nlohmann::json json_obj)
       parameter.cost_ratio.first = dist_ratio;
       parameter.cost_ratio.second = time_ratio;
     }
+
+    parameter.initial_solution_strategy = json_common.value("initial_solution_strategy", 4);
+    if (parameter.initial_solution_strategy < 0)
+    {
+      parameter.initial_solution_strategy = 0;
+    }
+    parameter.metaheuristic_strategy = json_common.value("metaheuristic_strategy", 10);
+    if (parameter.metaheuristic_strategy < 0)
+    {
+      parameter.metaheuristic_strategy = 0;
+    }
   }
   // #endregion common
 

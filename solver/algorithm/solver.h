@@ -74,6 +74,9 @@ public:
     this->_num_of_vehicles = num_of_vehicles;
     this->_num_of_nodes = num_of_nodes;
 
+    this->initial_solution_strategy = IntToInitialSolutionStrategyEnum(parameter.initial_solution_strategy);
+    this->metaheuristic_strategy = IntToMetaheuristicStrategyEnum(parameter.metaheuristic_strategy);
+
     // build cost matrix
     std::vector<std::vector<double>> cost_matrix;
     std::pair<double, double> cost_ratio = parameter.cost_ratio;

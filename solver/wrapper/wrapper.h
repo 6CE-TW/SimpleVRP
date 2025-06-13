@@ -17,6 +17,9 @@ using json = nlohmann::json;
 struct Parameter
 {
   std::pair<double, double> cost_ratio = {1, 1};
+  std::int64_t initial_solution_strategy = 4;
+  std::int64_t metaheuristic_strategy = 10;
+
   std::vector<Destination> destinations;
   std::vector<Vehicle> vehicles;
 };
