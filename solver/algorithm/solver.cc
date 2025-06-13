@@ -47,7 +47,8 @@ void SimpleVRPSolver::PrintSolution()
     }
     std::cout << "\n\n";
   }
-  std::cout << "cost: " << this->_cost << "\n";
+  std::cout << "Initial cost: " << this->_initial_cost << "\n";
+  std::cout << "Final cost:   " << this->_cost << "\n";
 }
 
 void SimpleVRPSolver::PrintNodeRecords()
@@ -64,7 +65,8 @@ void SimpleVRPSolver::PrintNodeRecords()
     }
     std::cout << "\n\n";
   }
-  std::cout << "cost: " << this->_cost << "\n";
+  std::cout << "Initial cost: " << this->_initial_cost << "\n";
+  std::cout << "Final cost:   " << this->_cost << "\n";
 }
 
 Solution SimpleVRPSolver::ExtractSolution()
@@ -82,8 +84,8 @@ Solution SimpleVRPSolver::ExtractSolution()
     {
       std::size_t node = node_records.at(i).at(j);
       Task task(j, node, this->_parameter.destinations.at(node));
-      
-      if(j > 0)
+
+      if (j > 0)
       {
         std::size_t prev_node = vehicle_task_route.tasks.back().index;
         task.transit_distance = this->_distance_matrix[prev_node][node];

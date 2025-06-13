@@ -33,6 +33,7 @@ set(SOURCE_FILES
     api/osrm_request.cc
     data/data.cc
     solver/algorithm/solver.cc
+    solver/algorithm/initial_solution/tools.cc
     solver/algorithm/initial_solution/initial_solution.cc
     solver/algorithm/local_search/tools.cc
     solver/algorithm/local_search/local_search.cc

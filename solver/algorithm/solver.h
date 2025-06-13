@@ -6,16 +6,10 @@
 #include "solver/algorithm/local_search/metaheuristic.h"
 #include "solver/algorithm/parameter/parameter.h"
 #include "solver/dao/solution.h"
+#include "solver/dao/route.h"
 #include "solver/wrapper/wrapper.h"
 
 #include "solver/common_tools.h"
-
-struct Route
-{
-  std::size_t prev;
-  std::size_t next;
-  std::size_t vehicle;
-};
 
 class SimpleVRPSolver
 {
@@ -29,6 +23,7 @@ private:
   std::size_t _num_of_middle_nodes;
   std::vector<std::size_t> _start_node_indices;
   std::vector<std::size_t> _end_node_indices;
+  double _initial_cost;
   double _cost;
   InitialSolutionStrategy initial_solution_strategy = InitialSolutionStrategy::CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE;
   LocalSearchParameter local_search_parameter;
@@ -53,6 +48,8 @@ private:
 
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
+  void InitialSolutionGlobalMinimal();
+  void InitialSolutionGlobalMaximumVarianceFirst();
   void GetInitialSolution();
 
   void EncodeRouteToNodeRecord();
@@ -76,6 +73,9 @@ public:
     std::size_t num_of_nodes = parameter.destinations.size();
     this->_num_of_vehicles = num_of_vehicles;
     this->_num_of_nodes = num_of_nodes;
+
+    this->initial_solution_strategy = IntToInitialSolutionStrategyEnum(parameter.initial_solution_strategy);
+    this->metaheuristic_strategy = IntToMetaheuristicStrategyEnum(parameter.metaheuristic_strategy);
 
     // build cost matrix
     std::vector<std::vector<double>> cost_matrix;

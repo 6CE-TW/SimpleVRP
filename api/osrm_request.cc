@@ -193,7 +193,7 @@ int SetNavigationToServer(Solution solution, std::string timestamp)
       feature["properties"]["name"] = task.destination.name;
       feature["properties"]["serial"] = j;
       feature["properties"]["transit_distance"] = task.transit_distance;
-      feature["properties"]["transit_time"] = task.transit_time;
+      feature["properties"]["transit_time"] = duration_to_string(task.transit_time);
       feature["properties"]["transit_cost"] = task.transit_cost;
       feature["properties"]["vehicle_id"] = vehicle_task_route.vehicle.id;
       feature["geometry"]["type"] = "Point";
@@ -212,7 +212,7 @@ int SetNavigationToServer(Solution solution, std::string timestamp)
     line_feature["properties"]["stroke-opacity"] = 0.8;
     line_feature["properties"]["vehicle_id"] = vehicle_task_route.vehicle.id;
     line_feature["information"]["distance"] = vehicle_task_route.total_transit_distance();
-    line_feature["information"]["duration"] = vehicle_task_route.total_transit_time();
+    line_feature["information"]["duration"] = duration_to_string(vehicle_task_route.total_transit_time());
     line_feature["information"]["cost"] = vehicle_task_route.total_transit_cost();
     line_feature["information"]["node_count"] = vehicle_task_route.tasks.size();
     line_feature["geometry"]["type"] = "LineString";

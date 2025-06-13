@@ -1,6 +1,8 @@
 {
   "common": {
-    "cost_ratio": [1, 10]
+    "cost_ratio": [1, 10],
+    "initial_solution_strategy": 1,
+    "metaheuristic_strategy": 10
   },
   "destinations": [
     {
