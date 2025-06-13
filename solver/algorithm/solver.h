@@ -49,6 +49,7 @@ private:
   void InitialSolutionCheapestNeighbor();
   void InitialSolutionCheapestNeighborMultipleVehicle();
   void InitialSolutionGlobalMinimal();
+  void InitialSolutionGlobalMaximumVarianceFirst();
   void GetInitialSolution();
 
   void EncodeRouteToNodeRecord();

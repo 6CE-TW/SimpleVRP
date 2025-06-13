@@ -9,6 +9,7 @@ enum InitialSolutionStrategy
   CHEAPEST_NEIGHBOR = 0,
   CHEAPEST_NEIGHBOR_MULTIPLE_VEHICLE = 1,
   GLOBAL_MINIMAL = 2,
+  GLOBAL_MAXIMUM_VARIANCE_FIRST = 3,
 };
 
 std::string InitialSolutionStrategyEnumToString(InitialSolutionStrategy initial_solution_strategy);
