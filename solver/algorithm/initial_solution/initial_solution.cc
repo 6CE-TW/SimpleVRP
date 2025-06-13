@@ -77,9 +77,9 @@ void SimpleVRPSolver::InitialSolutionCheapestNeighbor()
     traversed_nodes.insert(best_idx);
     latest_arrival_node = best_idx;
   }
-  Route temp_route{latest_arrival_node, this->_num_of_nodes - 1, 0};
+  Route temp_route{latest_arrival_node, this->_end_node_indices[0], 0};
   this->route_records[0].push_back(temp_route);
-  this->_cost += this->_cost_matrix[latest_arrival_node][this->_num_of_nodes - 1];
+  this->_cost += this->_cost_matrix[latest_arrival_node][this->_end_node_indices[0]];
 
   for (std::size_t i = 1; i < this->_num_of_vehicles; ++i)
   {
